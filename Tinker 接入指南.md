@@ -126,11 +126,11 @@ Demo请参考[tinker-sample-android](https://github.com/Tencent/tinker/tree/mast
 
 1.  调用`assembleDebug`编译，我们会将编译过的包保存在build/bakApk中。然后我们将它安装到手机，点击`SHOW INFO`按钮，可以看到补丁并没有加载.
  
-	![请在这里输入图片描述](http://ui.code.oa.com/files/image/201607/20160714154632287.png)
+	![请在这里输入图片描述](images/20160714154632287.png)
 
 2. 修改代码，例如将[MainActivity](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/app/MainActivity.java)中`I am on patch onCreate`的Log打开。然后我们需要修改[build.gradle](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/build.gradle)中的参数，将步骤一编译保存的安装包路径拷贝到`tinkerPatch`中的`oldApk`参数中。
 
-	![请在这里输入图片描述](http://ui.code.oa.com/files/image/201607/20160714155011634.png)
+	![请在这里输入图片描述](images/20160714155011634.png)
 
 3. 调用`tinkerPatchDebug`, 补丁包与相关日志会保存在`/build/outputs/tinkerPatch/`。然后我们将`patch_signed_7zip.apk`推送到手机的sdcard中。
 
@@ -140,11 +140,11 @@ Demo请参考[tinker-sample-android](https://github.com/Tencent/tinker/tree/mast
 
 4. 点击`LOAD PATCH`按钮, 如果看到`patch success, please restart process`的toast，即可锁屏或者点击`KILL SELF`按钮 
 
-	![请在这里输入图片描述](http://ui.code.oa.com/files/image/201607/20160714161956687.png)
+	![请在这里输入图片描述](images/20160714161956687.png)
 
 5. 我们可以看到的确出现了`I am on patch onCreate`日志，同时点击`SHOW INFO`按钮，显示补丁包的确已经加载成功了。 
  
-	![请在这里输入图片描述](http://ui.code.oa.com/files/image/201607/20160714162521240.png)
+	![请在这里输入图片描述](images/20160714162521240.png)
 
 ### Release的使用方法
 Tinker的使用方式如下，以gradle接入的release包为例：
