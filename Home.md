@@ -45,10 +45,10 @@ Tinker热补丁方案不仅支持类、So以及资源的替换，它还是2.X－
 3. 由于[apk-parser issue](https://github.com/caoqianli/apk-parser/issues/46), TinkerId不能设置为非常短的数字，例如“1.0”；
 4. 在Android N上，补丁对应用启动时间有轻微的影响；
 5. 不支持部分三星android-19机型，加载补丁时会主动抛出`"TinkerRuntimeException:checkDexInstall failed"`；
-6. 关于渠道包的问题，若使用flavor编译渠道包，会导致不同的渠道包由于BuildConfig变化导致classes.dex差异。这里建议的方式有：
-	a. 将渠道信息写在AndroidManifest.xml中；
-	b. 将渠道信息写在apk文件的zip comment中，这种是建议方式；
-	c. 若不同渠道存在功能上的差异，建议将差异部分放于单独的dex或采用相同代码不同配置方式实现。
+6. 关于渠道包的问题，若使用flavor编译渠道包，会导致不同的渠道包由于BuildConfig变化导致classes.dex差异。这里建议的方式有：   
+	a. 将渠道信息写在AndroidManifest.xml中；  
+	b. 将渠道信息写在apk文件的zip comment中，这种是建议方式；  
+	c. 若不同渠道存在功能上的差异，建议将差异部分放于单独的dex或采用相同代码不同配置方式实现。  
 
 ## 如何使用Tinker
 Tinker为了实现“高可用”的目标，在接入成本上做了妥协。热补丁并不简单，在使用之前请务必先仔细阅读以下文档：
