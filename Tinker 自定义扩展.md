@@ -125,9 +125,46 @@ TinkerInstaller.install(appLike,
 | onLoadFileMd5Mismatch     | 部分文件的md5与meta中定义的不一致。默认我们为了安全考虑，依然会清空补丁。| 
 | onLoadPatchInfoCorrupted     | patch.info是用来管理补丁包版本的文件，这是info文件损坏的回调。默认我们会卸载补丁包，因为此时我们已经无法恢复了。|
 | onLoadPackageCheckFail     | 加载过程补丁包的检查失败，这里可以通过错误码区分，例如签名校验失败、tinkerId不一致等原因。默认我们将会卸载补丁包|
-| `onLoadException`     | 在加载过程捕捉到异常，`十分希望你可以把错误信息反馈给我们`。默认我们会直接卸载补丁包 具体的错误类型有：型:<br> 1. ShareConstants.ERROR_LOAD_EXCEPTION_UNKNOWN:没有捕获到的java crash；<br> 2. ShareConstants.ERROR_LOAD_EXCEPTION_DEX:在加载dex过程中捕获到的crash；<br> 3. ShareConstants.ERROR_LOAD_EXCEPTION_RESOURCE:在加载res过程中捕获到的crash;<br> 4. ShareConstants.ERROR_LOAD_EXCEPTION_UNCAUGHT:没有捕获到的非java crash,这个是补丁机制的安全模式。|
+| `onLoadException`     | 在加载过程捕捉到异常，`十分希望你可以把错误信息反馈给我们`。默认我们会直接卸载补丁包 |
 
-具体的错误类型与错误码可查看[DefaultLoadReporter.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/DefaultLoadReporter.java)的注释。对于onLoadPatchVersionChanged与onLoadFileNotFound的复写要较为谨慎，因为版本升级杀掉其他进程与文件丢失发起恢复任务，都是我认为比较重要的操作。
+所有的错误码都定义在[ShareConstants.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-loader/src/main/java/com/tencent/tinker/loader/shareutil/ShareConstants.java)，`onLoadPackageCheckFail` 的相关错误码解析如下：
+
+| 错误码              | 数值       | 描述       | 
+| ----------------- | ---- | ---------  | 
+| ERROR_PACKAGE_CHECK_SIGNATURE_FAIL    	    |-1 | 签名校验失败| 
+| ERROR_PACKAGE_CHECK_PACKAGE_META_NOT_FOUND    |-2|找不到"assets/package_meta.txt"文件| 
+| ERROR_PACKAGE_CHECK_DEX_META_CORRUPTED | -3|"assets/dex_meta.txt"信息损坏|
+| ERROR_PACKAGE_CHECK_LIB_META_CORRUPTED       | -4|"assets/so_meta.txt"信息损坏|
+| ERROR_PACKAGE_CHECK_APK_TINKER_ID_NOT_FOUND    |-5|找不到基准apk AndroidManifest中的TINKER_ID | 
+| ERROR_PACKAGE_CHECK_PATCH_TINKER_ID_NOT_FOUND | -6|找不到补丁中"assets/package_meta.txt"中的TINKER_ID
+| ERROR_PACKAGE_CHECK_TINKER_ID_NOT_EQUAL       | -7|基准版本与补丁定义的TINKER_ID不相等|
+| ERROR_PACKAGE_CHECK_RESOURCE_META_CORRUPTED       | -8|"assets/res_meta.txt"信息损坏|
+
+`onLoadException`的错误码具体如下：
+
+| 错误码              | 数值       | 描述       | 
+| ----------------- | ---- | ---------  | 
+| ERROR_LOAD_EXCEPTION_UNKNOWN    	                  |-1 | 没有捕获到的java crash | 
+| ERROR_LOAD_EXCEPTION_DEX                  |-2|在加载dex过程中捕获到的crash  | 
+| ERROR_LOAD_EXCEPTION_RESOURCE | -3|在加载res过程中捕获到的crash|
+| ERROR_LOAD_EXCEPTION_UNCAUGHT       | -4|没有捕获到的非java crash,这个是补丁机制的安全模式|
+
+回调中定义的fileType定义如下：
+
+| 文件类型              | 数值       | 描述       | 
+| ----------------- | ---- | ---------  | 
+| TYPE_PATCH_FILE    	                  |1 | 补丁文件 | 
+| TYPE_PATCH_INFO                  |2|"patch.info"补丁版本配置文件 | 
+| TYPE_DEX | 3|在Dalvik合成全量的Dex文件|
+| TYPE_DEX_FOR_ART       | 4|在Art合成的小Dex文件|
+| TYPE_DEX_OPT       | 5|odex文件|
+| TYPE_LIBRARY       | 6|library文件|
+| TYPE_RESOURCE       | 7|资源文件|
+
+加载过程的具体的错误类型与错误码可查看[DefaultLoadReporter.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/DefaultLoadReporter.java)的注释。
+
+
+对于onLoadPatchVersionChanged与onLoadFileNotFound的复写要较为谨慎，因为版本升级杀掉其他进程与文件丢失发起恢复任务，都是我认为比较重要的操作。
 
 ### 自定义PatchReporter类
 [PatchReporter类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/PatchReporter.java)定义了Tinker在修复或者升级补丁时的一些回调，我们为你提供了默认实现[DefaultPatchReporter.java](http://git.code.oa.com/wechat-android-dev/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/DefaultPatchReporter.java).
@@ -149,6 +186,7 @@ isUpgrade：区分补丁合成的类型。是由于文件丢失而发起的Repar
 | onPatchInfoCorrupted     |patch.info是用来管理补丁包版本的文件，这是在更新info文件时发生损坏的回调。默认我们会卸载补丁包，因为此时我们已经无法恢复了。|
 | `onPatchException`     | 在补丁合成过程捕捉到异常，`十分希望你可以把错误信息反馈给我们`。默认我们会删除临时文件，并且将tinkerFlag设为不可用。|
 
+PatchReporter中onPatchPackageCheckFail的错误码与LoadReporter的一致。
 
 
 ### 自定义PatchListener类
@@ -164,13 +202,13 @@ public int patchCheck(String path, boolean isUpgrade)
 
 以DefaultPatchListener为例，说明默认我们检查的条件，你可以定义自己的错误码，也可以沿用这里的错误码。
 
-| 函数               | 描述       | 
-| ----------------- | ---------  | 
-| ShareConstants.ERROR_PATCH_DISABLE    |当前tinkerFlag为不可用状态。     | 
-| ShareConstants.ERROR_PATCH_NOTEXIST| 输入的临时补丁包文件不存在。  | 
-| ShareConstants.ERROR_PATCH_INSERVICE | 不能在:patch补丁合成进程，发起补丁的合成请求。|
-| ShareConstants.ERROR_PATCH_RUNNING     | 当前:patch补丁合成进程正在运行。|
-| 其他     | 在SamplePatchListener里面，我们还检查了当前Rom剩余空间，最大内存，是否是GooglePlay渠道等条件。| 
+| 错误码              | 数值       | 描述       | 
+| ----------------- | ---------  | ---------  | 
+| ERROR_PATCH_DISABLE    |-1|当前tinkerFlag为不可用状态。     | 
+| ERROR_PATCH_NOTEXIST| -2|输入的临时补丁包文件不存在。  | 
+| ERROR_PATCH_RUNNING |-3    | 当前:patch补丁合成进程正在运行。|
+| ERROR_PATCH_INSERVICE | -4|不能在:patch补丁合成进程，发起补丁的合成请求。|
+| 其他     | |在SamplePatchListener里面，我们还检查了当前Rom剩余空间，最大内存，是否是GooglePlay渠道等条件。| 
 
 ### 自定义AbstractResultService类
 [AbstractResultService类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/service/AbstractResultService.java)是:patch补丁合成进程将合成结果返回给主进程的类。我们为你提供了默认实现[TinkerResultService.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/service/TinkerResultService.java)。
@@ -231,5 +269,5 @@ Tinker.with(context).setPatchServiceNotificationId(id);
 [UpgradePatch类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/patch/UpgradePatch.java)是用来升级当前补丁包的处理类，也就是上面isUpgradePatch为true的情况，一般来说你也不需要复写它。
 
 可以看到整个Tinker框架非常灵活，基本所有的逻辑都放在可复写的类或回调中，你可以轻松的完成自身需要的自定义工作。
- 
+
 你可以根据需要自定义以上的一些类，然后我们继续学习[Tinker API概览](https://github.com/Tencent/tinker/wiki/Tinker-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)。

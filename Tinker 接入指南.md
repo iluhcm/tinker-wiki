@@ -9,7 +9,7 @@ gradle是推荐的接入方式，在gradle插件`tinker-patch-gradle-plugin`中�
 ```gradle
 buildscript {
     dependencies {
-        classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.6.0')
+        classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.6.1')
     }
 }
 ```
@@ -19,9 +19,9 @@ buildscript {
 ```gradle
 dependencies {
 	//可选，用于生成application类 
-	compile('com.tencent.tinker:tinker-android-anno:1.6.0')
+	compile('com.tencent.tinker:tinker-android-anno:1.6.1')
     //tinker的核心库
-    compile('com.tencent.tinker:tinker-android-lib:1.6.0') 
+    compile('com.tencent.tinker:tinker-android-lib:1.6.1') 
 }
 ...
 ...
@@ -55,7 +55,7 @@ apply plugin: 'com.tencent.tinker.patch'
 | `packageConfig`     |   | 用于生成补丁包中的'package_meta.txt'文件 | 
 | configField        |  TINKER_ID, NEW_TINKER_ID | configField("key", "value"), 默认我们自动从基准安装包与新安装包的Manifest中读取tinkerId,并自动写入configField。在这里，你可以定义其他的信息，在运行时可以通过TinkerLoadResult.getPackageConfigByName得到相应的数值。但是建议直接通过修改代码来实现，例如BuildConfig。 | 
 | `sevenZip`      |   | 7zip路径配置项，执行前提是useSign为true | 
-| zipArtifact   | null  | 例如"com.tencent.tinker:seven-zip:1.1.0"，将自动根据机器属性获得对应的7za运行文件，推荐使用。 | 
+| zipArtifact   | null  | 例如"com.tencent.mm:SevenZip:1.1.10"，将自动根据机器属性获得对应的7za运行文件，推荐使用。 | 
 | path          | 7za | 系统中的7za路径，例如"/usr/local/bin/7za"。path设置会覆盖zipArtifact，若都不设置，将直接使用7za去尝试。| 
 
 具体的参数设置事例可参考sample中的[app/build.gradle](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/build.gradle)。
