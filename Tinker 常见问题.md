@@ -4,8 +4,9 @@ Tinker 常见问题
 编译过程相关的issue请先查看是否是以下情况：
 
 1. `无法打开sample工程`： 请使用单独的IDE窗口打开tinker-sample-android工程；
-2. `tinkerId is not set`: 这是因为没有正确的配置IDE的git路径, 这里你也可以使用其他字符作为tinkerId;
-3. 对于编译与补丁时发生的异常，请到[Tinker 自定义扩展](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95)中查看具体错误码的原因。并通过“Tinker.”过滤Tinker相关的日志提交到issue中。
+2. `tinkerId is not set`: 这是因为没有正确的配置IDE的git路径, **在某些环境可能需要手动commit一次**。这里你也可以使用其他字符作为tinkerId;
+3. 对于编译与补丁时发生的异常，请到[Tinker 自定义扩展](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95)中查看具体错误码的原因。并通过“Tinker.”过滤Tinker相关的日志提交到issue中;
+4. 若自定义TinkerResultService，请务必将新的Service添加到Manifest中。
 
 在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。
 
