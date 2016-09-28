@@ -77,7 +77,7 @@ loadVerifyFlag = false)                                   //tinkerLoadVerifyFlag
 public class SampleApplicationLike extends DefaultApplicationLike
 ```
 
-到此为止，Tinker初步的接入已真正的完成，你已经可以愉快的使用Tinker来实现补丁功能了。
+**若采用Annotation生成Application,需要将原来的Application类删掉**。到此为止，Tinker初步的接入已真正的完成，你已经可以愉快的使用Tinker来实现补丁功能了。
 
 ## 可选的自定义类
 在Tinker中你可以自定义一些类，它们需要在构造Tinker实例时作为参数传递，在[TinkerManager](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/util/TinkerManager.java)的`installTinker`中，你可以根据自己的需要自定义其中的一些类:

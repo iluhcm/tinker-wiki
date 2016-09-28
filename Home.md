@@ -46,7 +46,7 @@ Tinker热补丁方案不仅支持类、So以及资源的替换，它还是2.X－
 4. 在Android N上，补丁对应用启动时间有轻微的影响；
 5. 不支持部分三星android-19机型，加载补丁时会主动抛出`"TinkerRuntimeException:checkDexInstall failed"`；
 6. 关于渠道包的问题，若使用flavor编译渠道包，会导致不同的渠道包由于BuildConfig变化导致classes.dex差异。这里建议的方式有：   
-	a. 将渠道信息写在AndroidManifest.xml中；  
+	a. 将渠道信息写在AndroidManifest.xml或文件中，例如channel.ini；  
 	b. 将渠道信息写在apk文件的zip comment中，这种是建议方式；  
 	c. 若不同渠道存在功能上的差异，建议将差异部分放于单独的dex或采用相同代码不同配置方式实现。  
 
