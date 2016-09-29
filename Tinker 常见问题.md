@@ -4,12 +4,20 @@ Tinker 常见问题
 编译过程相关的issue请先查看是否是以下情况：
 
 1. `无法打开sample工程`： 请使用单独的IDE窗口打开tinker-sample-android工程；
-2. `tinkerId is not set`: 这是因为没有正确的配置IDE的git路径, **在某些环境可能需要手动commit一次**。这里你也可以使用其他字符作为tinkerId;
+2. `tinkerId is not set`: 这是因为没有正确的配置IDE的git路径, **若不是通过clone方式下载tinker，需要本地手动commit一次**。这里你也可以使用其他字符作为tinkerId;
 3. 对于编译与补丁时发生的异常，请到[Tinker 自定义扩展](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95)中查看具体错误码的原因。并通过“Tinker.”过滤Tinker相关的日志提交到issue中;
 4. 若自定义TinkerResultService，请务必将新的Service添加到Manifest中;
-5. 若使用`DefaultLifeCycle`注解生成Application，需要将原来Application的实现移动到ApplicationLike中，并将原来的Application类删掉。
+5. 若使用`DefaultLifeCycle`注解生成Application，需要将原来Application的实现移动到ApplicationLike中，并将原来的Application类删掉;
+6. 关于Application的改造这一块大家比较疑惑，这块请认真阅读[自定义Application类](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95#%E8%87%AA%E5%AE%9A%E4%B9%89application%E7%B1%BB)，大部分的app应该都能在半小时内完成改造。
 
-在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。
+**在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。**
+
+## 我应该使用哪个作为补丁包下发，如何做多次修复？
+`patch_signed_7zip.apk`是已签名并且经过7z压缩的补丁包，但是你最好重命名一下，不要让它以`.apk`结尾，这是因为有些运营商会挟持以`.apk`结尾的资源。
+
+另外一点，我们在发起补丁请求时，**需要先将补丁包先拷贝到dataDir中**。因为在sdcard中，补丁包是极其容易被清理软件删除。这里可以参考[UpgradePatchRetry.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/util/UpgradePatchRetry.java)的实现。
+
+**Tinker支持对同一基准版本做多次补丁修复，在生成补丁时，oldApk依然是已经发布出去的那个版本。即补丁版本二的oldApk不能是补丁版本一，它应该依然是用户手机上已经安装的基准版本。**
 
 ## Tinker库中有什么类是不能修改的？
 Tinker库中不能修改的类一共有25个，即com.tencent.tinker.loader.*类。加上你的Appliction类，只有25个类是无法通过Tinker来修改的。即使类似Tinker.java等管理类，也是可以通过Tinker本身来修改。
@@ -47,11 +55,6 @@ Tinker采用全量合成方式实现资源替换，这里有以下几点是使�
 4. 若你同时使用了资源混淆组件[AndResGuard](https://github.com/shwenzhang/AndResGuard), 你也需要将混淆资源的mapping保留下来。
 
 微信通过将补丁编译与Jenkins很好的结合起来，只需要点击一个按钮，即可方便的生成补丁包。
-
-## 我应该使用哪个作为补丁包下发？
-`patch_signed_7zip.apk`是已签名并且经过7z压缩的补丁包，但是你最好重命名一下，不要让它以`.apk`结尾，这是因为有些运营商会挟持以`.apk`结尾的资源。
-
-另外一点，我们在发起补丁请求时，**需要先将补丁包先拷贝到dataDir中**。因为在sdcard中，补丁包是极其容易被清理软件删除。这里可以参考[UpgradePatchRetry.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/util/UpgradePatchRetry.java)的实现。
 
 ## tinkerId应该如何选择？
 tinkerId是用了区分基准安装包的，我们需要严格保证一个基准包的唯一性。在设计的初期，我们使用的是基准包的CentralDirectory的CRC，但某些APP为了生成渠道包会对安装包重新打包，导致不同的渠道包的CentralDirectory并不一致。

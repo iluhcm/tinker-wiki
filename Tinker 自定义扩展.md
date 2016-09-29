@@ -3,6 +3,15 @@ Tinker 自定义扩展
 ## 自定义Application类
 程序启动时会加载默认的Application类，这导致我们补丁包是无法对它做修改了。如何规避？在这里我们并没有使用类似InstantRun `hook Application`的方式，而是通过代码框架的方式来避免，这也是为了尽量少的去反射，提升框架的兼容性。
 
+这里我们要实现的是完全将原来的Application类隔离起来，即其他任何类都不能再引用我们自己的Application。我们需要做的其实是以下几个工作：
+
+1. 将我们自己Application的所有代码拷贝到自己的ApplicationLike继承类中，例如SampleApplicationLike;
+2. Application的`attachBaseContext`方法实现要单独移动到`onBaseContextAttached`中；
+3. 对ApplicationLike中，引用application的地方改成`getApplication()`;
+4. 对其他引用Application或者它的静态对象与方法的地方，改成引用ApplicationLike的静态对象与方法；
+
+更详细的事例，大家可以参考下面的一些例子以及[SampleApplicationLike](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/app/SampleApplicationLike.java)的做法。
+
 ### Application代理类
 为了使真正的Application实现可以在补丁包中修改，我们把Appliction类的所有逻辑移动到[ApplicationLike](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-loader/src/main/java/com/tencent/tinker/loader/app/ApplicationLike.java)代理类中。
 
