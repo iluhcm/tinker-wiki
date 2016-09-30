@@ -22,6 +22,8 @@ Tinker 常见问题
 ## Tinker库中有什么类是不能修改的？
 Tinker库中不能修改的类一共有25个，即com.tencent.tinker.loader.*类。加上你的Appliction类，只有25个类是无法通过Tinker来修改的。即使类似Tinker.java等管理类，也是可以通过Tinker本身来修改。
 
+**注意，请务必将不能修改的类，特别是你的Application类加入到tinkerPatch.dex.loader pattern中。**
+
 ## 什么类需要放在主dex中？
 Tinker并不干涉你分包与多dex的加载逻辑，但是你需要确保以下几点：
 
