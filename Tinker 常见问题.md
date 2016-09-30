@@ -29,6 +29,8 @@ Tinker并不干涉你分包与多dex的加载逻辑，但是你需要确保以�
 2. 若你自定义了TinkerLoader类，你需要将TinkerLoader的自定义类，以及它用的到类也放在主dex，并且已经在dex.loader中配置;
 3. ApplicationLike的继承类也需要放在主dex中，但是它无须在dex.loader中配置，因为它是可以使用Tinker修改的类。最后`如果你需要在加载其他dex之前加载Tinker的管理类，你也可以将com.tencent.tinker.*都加入到主dex`。
 4. 你的ApplicationLike实现类的直接引用类以及在调用Multidex install之前加载的类也都需要放到主dex中。
+
+**注意：Tinker会自动生成需要放在主dex的keep规则，你需要手动将生成规则拷贝到自己的multiDexKeepProguard文件中。例如Sample中的`multiDexKeepProguard file("keep_in_main_dex.txt")`。**
    
 ## 如何对Library文件作补丁？
 当前我们并没有直接将补丁的lib路径添加到`DexPathList`中，理论上这样可以做到程序完全没有感知的对Library文件作补丁。这里主要是因为在多abi的情况下，某些机器获取的并不准确。**当前对Library文件作补丁可参考[Tinker API概览](https://github.com/Tencent/tinker/wiki/Tinker-API%E6%A6%82%E8%A7%88)，这里以后需要考虑优化。**

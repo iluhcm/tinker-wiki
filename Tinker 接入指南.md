@@ -67,10 +67,12 @@ apply plugin: 'com.tencent.tinker.patch'
 
 2. 如果minifyEnabled为true，将自动将Tinker的proguard规则添加到proguardFiles中，输出路径为build/intermediates/tinker_intermediates/tinker_proguard.pro;
 
-3. 如果multiDexEnabled为true，将自动生成Tinker需要放在主dex的keep规则，你需要拷贝它到自己的multiDexKeepProguard文件中。这是因为它是一个单独的文件，而proguardFiles是一个list。输出路径为：build/intermediates/tinker_intermediates/tinker_multidexkeep.pro。
-后你可以在`build/outputs/tinkerPatch`中找到输出的文件。
+3. 如果multiDexEnabled为true，将自动生成Tinker需要放在主dex的keep规则，你需要手动将生成规则拷贝到自己的multiDexKeepProguard文件中。这是因为它是一个单独的文件，而proguardFiles是一个list。例如Sample中的`multiDexKeepProguard file("keep_in_main_dex.txt")`。
 
 4. 把dexOptions的jumboMode打开。
+
+输出路径为：build/intermediates/tinker_intermediates/tinker_multidexkeep.pro。
+后你可以在`build/outputs/tinkerPatch`中找到输出的文件。
 
 ## 输出文件详解
 在tinkerPatch输出目录`build/outputs/tinkerPatch`中，我们关心的文件有：
