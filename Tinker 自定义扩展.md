@@ -74,6 +74,8 @@ public class SampleApplication extends TinkerApplication {
 | loaderClassName     | "com.tencent.tinker.<br>loader.TinkerLoader" | 加载Tinker的主类名，对于特殊需求可能需要使用自己的加载类。需要注意的是：<br>`这个类以及它使用的类都是不能被补丁修改的，并且我们需要将它们加到dex.loader[]中`。<br>一般来说，我们使用默认即可。|
 | tinkerLoadVerifyFlag  | false | 由于合成过程中我们已经校验了各个文件的Md5，并将它们存放在/data/data/..目录中。默认每次加载时我们并不会去校验tinker文件的Md5,但是你也可通过开启loadVerifyFlag强制每次加载时校验，但是这会带来一定的时间损耗。|
 
+**Warning: 这里务必不能写成SampleApplicationLike.class.getName()，只能通过传递字符串的方式。为了减少错误的出现，推荐使用Annotation生成Application类**
+
 ### 使用Annotation生成Application类
 为了隐藏你的Application类，我们更加推荐你使用`tinker-android-anno`在运行时生成你的Application类。这样保证你无法修改你的Application类，不会因为错误操作导致引入更多无法修改的类。
 
