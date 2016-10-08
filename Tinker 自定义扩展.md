@@ -20,6 +20,16 @@ Tinker 自定义扩展
 +public class SampleApplicationLike extends DefaultApplicationLike 
 ```
 
+**同时我们需要将gradle的dex loader中的Application改为新的YourApplication。**
+
+```xml
+dex {
+loader = ["com.tencent.tinker.loader.*",
+         //warning, you must change it with your application
+          "tinker.sample.android.YourApplication",       
+}
+```
+
 具体实现可参考[SampleApplicationLike](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/app/SampleApplicationLike.java), 其中对Application类的调用可以修改成：
 
 ```java
@@ -89,6 +99,7 @@ public class SampleApplicationLike extends DefaultApplicationLike
 ```
 
 **若采用Annotation生成Application,需要将原来的Application类删掉**。到此为止，Tinker初步的接入已真正的完成，你已经可以愉快的使用Tinker来实现补丁功能了。
+
 
 ## 可选的自定义类
 在Tinker中你可以自定义一些类，它们需要在构造Tinker实例时作为参数传递，在[TinkerManager](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/util/TinkerManager.java)的`installTinker`中，你可以根据自己的需要自定义其中的一些类:
