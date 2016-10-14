@@ -78,15 +78,15 @@ apply plugin: 'com.tencent.tinker.patch'
 ### 多Flavor打包
 有的时候我们希望通过flavor方式打包，在sample中提供了简单的用法事例：
 
-1. 通过flavor编译，这个时候我们可以看到bakApk路径是一个按照flavor名称区分的目录；
-2. 将编译目录路径填写到sample中`tinkerBuildFlavorDirectory`，其他的几个字段不需要填写，这里会自动根据路径拼接;  
+1.通过flavor编译，这个时候我们可以看到bakApk路径是一个按照flavor名称区分的目录；
+2.将编译目录路径填写到sample中`tinkerBuildFlavorDirectory`，其他的几个字段不需要填写，这里会自动根据路径拼接;  
 ```xml
 ext {
     tinkerBuildFlavorDirectory = "${bakPath}/app-1014-13-35-12"
 }
 ```
 
-3. 运行`tinkerPatchAllFlavorDebug`或者`tinkerPatchAllFlavorRelease`即可得到所有flavor的补丁包。
+3.运行`tinkerPatchAllFlavorDebug`或者`tinkerPatchAllFlavorRelease`即可得到所有flavor的补丁包。
 
 ## 输出文件详解
 在tinkerPatch输出目录`build/outputs/tinkerPatch`中，我们关心的文件有：
