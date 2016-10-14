@@ -31,7 +31,7 @@ public static void install(ApplicationLike applicationLike) {
 ### 发起补丁修复请求
 正如之前所说的，补丁请求分为修复当前版本以及升级当前版本两种。修复当前版本一般是在当前版本的补丁文件出现缺失或不一致的情况，所有请求都将会交给PatchListener去处理。
 
-发起修复补丁请求(使用者无需手动调用，在DefaultLoadReporter中的onLoadFileNotFound自动调用)：
+发起修复补丁请求：
 
 ```java
 public static void onReceiveRepairPatch(Context context, String patchLocation) {
@@ -39,7 +39,9 @@ public static void onReceiveRepairPatch(Context context, String patchLocation) {
 }
 ```
 
-发起升级补丁请求，即收到一个新的补丁包：
+**事实上，大家其实可以忽略onReceiveRepairPatch这个接口。使用者无需手动调用，在DefaultLoadReporter中的onLoadFileNotFound会自动调用。它的作用是自动恢复已经加载补丁的缺失文件。**
+
+发起升级补丁请求，即收到一个新的补丁包，多次补丁也是调用下面这个接口：
 
 ```java
 public static void onReceiveUpgradePatch(Context context, String patchLocation) {
@@ -121,7 +123,7 @@ Tinker.with(context).cleanPatch();
 Tinker.with(context).cleanPatchByVersion();
 ```  
 
-**需要注意的是，在补丁已经加载的前提下清除补丁，可能会引起crash。这个时候更好重启一下所有的进程。** 
+**在升级版本时我们也无须手动去清除补丁，框架已经为我们做了这件事情。需要注意的是，在补丁已经加载的前提下清除补丁，可能会引起crash。这个时候更好重启一下所有的进程。** 
 
 其他API这里不再一一概述，请大家自行翻阅[Tinker.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/tinker/Tinker.java)。
 

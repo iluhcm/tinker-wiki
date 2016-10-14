@@ -42,13 +42,8 @@ Tinker热补丁方案不仅支持类、So以及资源的替换，它还是2.X－
 
 1. Tinker不支持修改AndroidManifest.xml，Tinker不支持新增四大组件；
 2. 由于Google Play的开发者条款限制，不建议在GP渠道动态更新代码；
-3. 由于[apk-parser issue](https://github.com/caoqianli/apk-parser/issues/46), TinkerId不能设置为非常短的数字，例如“1.0”；
-4. 在Android N上，补丁对应用启动时间有轻微的影响；
-5. 不支持部分三星android-21机型，加载补丁时会主动抛出`"TinkerRuntimeException:checkDexInstall failed"`；
-6. 关于渠道包的问题，若使用flavor编译渠道包，会导致不同的渠道包由于BuildConfig变化导致classes.dex差异。这里建议的方式有：   
-	a. 将渠道信息写在AndroidManifest.xml或文件中，例如channel.ini；  
-	b. 将渠道信息写在apk文件的zip comment中，这种是建议方式；  
-	c. 若不同渠道存在功能上的差异，建议将差异部分放于单独的dex或采用相同代码不同配置方式实现。  
+3. 在Android N上，补丁对应用启动时间有轻微的影响；
+4. 不支持部分三星android-21机型，加载补丁时会主动抛出`"TinkerRuntimeException:checkDexInstall failed"`；
 
 ## 如何使用Tinker
 Tinker为了实现“高可用”的目标，在接入成本上做了妥协。热补丁并不简单，在使用之前请务必先仔细阅读以下文档：
@@ -66,10 +61,10 @@ Tinker为了实现“高可用”的目标，在接入成本上做了妥协。�
 Tinker经过几次全量上线，也发现了一些热补丁的问题。有以下的一些优化工作尚未完成：
 
 1. Keep dex apply插件:即保证编译补丁包时使用与基础包一样的分包方案，减少由于dex移动导致的变化；
-2. 资源全量Test，直接使用基础包的resources.arsc生成public.xml，无须applyResourceId；
-3. 支持flavor改变编译BuildConfig；
+2. 支持四大组件的代理；
 
-## 更多文章
+#
+# 更多文章
 关于Tinker与其他热补丁方案的具体对比或Tinker的实现原理，可参考以下文章：
 
 1. [微信Android热补丁实践演进之路](https://github.com/WeMobileDev/article/blob/master/%E5%BE%AE%E4%BF%A1Android%E7%83%AD%E8%A1%A5%E4%B8%81%E5%AE%9E%E8%B7%B5%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF.md)  

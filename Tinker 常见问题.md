@@ -12,13 +12,6 @@ Tinker 常见问题
 
 **在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。**
 
-## 我应该使用哪个作为补丁包下发，如何做多次修复？
-`patch_signed_7zip.apk`是已签名并且经过7z压缩的补丁包，但是你最好重命名一下，不要让它以`.apk`结尾，这是因为有些运营商会挟持以`.apk`结尾的资源。
-
-另外一点，我们在发起补丁请求时，**需要先将补丁包先拷贝到dataDir中**。因为在sdcard中，补丁包是极其容易被清理软件删除。这里可以参考[UpgradePatchRetry.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/util/UpgradePatchRetry.java)的实现。
-
-**Tinker支持对同一基准版本做多次补丁修复，在生成补丁时，oldApk依然是已经发布出去的那个版本。即补丁版本二的oldApk不能是补丁版本一，它应该依然是用户手机上已经安装的基准版本。**
-
 ## Tinker库中有什么类是不能修改的？
 Tinker库中不能修改的类一共有25个，即com.tencent.tinker.loader.*类。加上你的Appliction类，只有25个类是无法通过Tinker来修改的。即使类似Tinker.java等管理类，也是可以通过Tinker本身来修改。
 
@@ -33,6 +26,24 @@ Tinker并不干涉你分包与多dex的加载逻辑，但是你需要确保以�
 4. 你的ApplicationLike实现类的直接引用类以及在调用Multidex install之前加载的类也都需要放到主dex中。
 
 **注意：Tinker会自动生成需要放在主dex的keep规则，你需要手动将生成规则拷贝到自己的multiDexKeepProguard文件中。例如Sample中的`multiDexKeepProguard file("keep_in_main_dex.txt")`。**
+
+## 我应该使用哪个作为补丁包下发，如何做多次修复？
+`patch_signed_7zip.apk`是已签名并且经过7z压缩的补丁包，但是你最好重命名一下，不要让它以`.apk`结尾，这是因为有些运营商会挟持以`.apk`结尾的资源。
+
+另外一点，我们在发起补丁请求时，**需要先将补丁包先拷贝到dataDir中**。因为在sdcard中，补丁包是极其容易被清理软件删除。这里可以参考[UpgradePatchRetry.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/util/UpgradePatchRetry.java)的实现。
+
+对于补丁包的版本问题，我们可以在packageConfig中增加，例如sample中的
+
+```xml
+packageConfig {
+	/**
+     * patch version via packageConfig
+     */
+     configField("patchVersion", "1.0")
+}
+```
+
+**Tinker支持对同一基准版本做多次补丁修复，在生成补丁时，oldApk依然是已经发布出去的那个版本。即补丁版本二的oldApk不能是补丁版本一，它应该依然是用户手机上已经安装的基准版本。**
    
 ## 如何对Library文件作补丁？
 当前我们并没有直接将补丁的lib路径添加到`DexPathList`中，理论上这样可以做到程序完全没有感知的对Library文件作补丁。这里主要是因为在多abi的情况下，某些机器获取的并不准确。**当前对Library文件作补丁可参考[Tinker API概览](https://github.com/Tencent/tinker/wiki/Tinker-API%E6%A6%82%E8%A7%88)，这里以后需要考虑优化。**
@@ -45,25 +56,11 @@ Tinker并不干涉你分包与多dex的加载逻辑，但是你需要确保以�
 Tinker采用全量合成方式实现资源替换，这里有以下几点是使用者需要明确的：
 
 1. remoteView是无法修改，例如transition动画，notification icon以及桌面图标;
-2. Tinker只会将满足res pattern的资源放在最后的合成补丁资源包中。一般为了减少合成资源大小，我们不建议输入classes.dex或lib文件的pattern;
-3. 若一个文件:assets/test.dex, 它既满足dex pattern, 又满足res pattern。Tinker只会处理dex pattern, 然后在合成资源包会忽略assets/test.dex的变更。library也是如此。
+2. 对于资源文件的更新(尤其是assets)，需要注意代码中是否采用直接读取sourceApk路径方式读取，这样方式是无法更新的;
+3. Tinker只会将满足res pattern的资源放在最后的合成补丁资源包中。一般为了减少合成资源大小，我们不建议输入classes.dex或lib文件的pattern;
+4. 若一个文件:assets/test.dex, 它既满足dex pattern, 又满足res pattern。Tinker只会处理dex pattern, 然后在合成资源包会忽略assets/test.dex的变更。library也是如此。
 
 **Waringing:若出现资源变更，我们需要使用applyResourceMapping方式编译，这样不仅可以减少补丁包大小，同时防止remote view id变更造成的异常情况。**最后我们应该查看编译过程中生成的`resources_out.zip`是否满足我们的要求。 
-
-## 每次编译我应该保留哪些文件？
-正如sample中[app/build.gradle](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/build.gradle)，每个可能用到Tinker发布补丁的版本，需要在编译后保存以下几个文件：
-
-1. 编译后生成的apk文件，即用来编译补丁的基础版本；
-2. 若使用proguard混淆，需要保持mapping.txt文件；
-3. 需要保留编译时的R.txt文件；
-4. 若你同时使用了资源混淆组件[AndResGuard](https://github.com/shwenzhang/AndResGuard), 你也需要将混淆资源的mapping保留下来。
-
-微信通过将补丁编译与Jenkins很好的结合起来，只需要点击一个按钮，即可方便的生成补丁包。
-
-## tinkerId应该如何选择？
-tinkerId是用了区分基准安装包的，我们需要严格保证一个基准包的唯一性。在设计的初期，我们使用的是基准包的CentralDirectory的CRC，但某些APP为了生成渠道包会对安装包重新打包，导致不同的渠道包的CentralDirectory并不一致。
-
-**我们需要保证tinkerId一定是要唯一性的，这里推荐使用git rev或者svn rev. 如果我们升级了客户端版本，但tinkerId与旧版本相同，会导致可能会加载旧版本的补丁.**
 
 ## Tinker中的dex配置'raw'与'jar'模式应该如何选择？
 它们应该说各有优劣势，大概应该有以下几条原则：
@@ -75,6 +72,43 @@ tinkerId是用了区分基准安装包的，我们需要严格保证一个基准
 因为在合成过程中我们已经校验了各个文件的Md5，并将它们存放在/data/data/..目录中。`默认每次加载时我们并不会去校验tinker文件的Md5`,但是你也可通过开启loadVerifyFlag强制每次加载时校验，但是这会带来一定的时间损耗。
 
 **简单来说，'jar'模式更省空间，但是运行时校验的耗时大约为'raw'模式的两倍。如果你没有打开运行时校验，推荐使用'jar'模式。**
+
+## Tinker中的dex配置usePreGeneratedPatchDex应该如何选择？
+usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无须再合成。简单来说这边就是类似Qzone原理的方案，但是这套方案有两个问题：
+
+1. 需要插桩，在Dalvik会导致一定的性能损耗；
+2. 若补丁出现修改类的method，field，interface的数量，可能会导致补丁变大。具体原理可参考tinker相关的介绍文章。
+
+事实上，这里并不建议大家使用这种模式。提供这种模式是为了解决tinker无法支持加固、多flavor等场景。大家需要谨慎的选择。
+
+## 如何兼容多渠道包？
+关于渠道包的问题，若使用flavor编译渠道包，会导致不同的渠道包由于BuildConfig变化导致classes.dex差异。这里建议的方式有：   
+
+1. 将渠道信息写在AndroidManifest.xml或文件中，例如channel.ini；  
+2. 将渠道信息写在apk文件的zip comment中，这种是建议方式，例如可以使用项目[packer-ng-plugin](https://github.com/mcxiaoke/packer-ng-plugin)；  
+3. 若不同渠道存在功能上的差异，建议将差异部分放于单独的dex或采用相同代码不同配置方式实现；
+4. 若我们一定要使用flavor实现，这里可以考虑使用上述的usePreGeneratedPatchDex模式。
+
+事实上，tinker也支持多flavor直接编译多个补丁包，具体可参考
+
+## tinker是否兼容加固？
+tinker由于需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。
+
+
+## 每次编译我应该保留哪些文件，如何兼容AndResGuard？
+正如sample中[app/build.gradle](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/build.gradle)，每个可能用到Tinker发布补丁的版本，需要在编译后保存以下几个文件：
+
+1. 编译后生成的apk文件，即用来编译补丁的基础版本；
+2. 若使用proguard混淆，需要保持mapping.txt文件；
+3. 需要保留编译时的R.txt文件；
+4. 若你同时使用了资源混淆组件[AndResGuard](https://github.com/shwenzhang/AndResGuard), 你也需要将混淆资源的mapping保留下来，同时将`r/*`也添加到res pattern中。具体我们可以参考[build.gradle](https://github.com/dodola/tinker/blob/add5a7dc9f066cf8f1fd476c9ae1f44d210cb2aa/tinker-sample-android/app/build.gradle)。
+
+微信通过将补丁编译与Jenkins很好的结合起来，只需要点击一个按钮，即可方便的生成补丁包。
+	
+## tinkerId应该如何选择？
+tinkerId是用了区分基准安装包的，我们需要严格保证一个基准包的唯一性。在设计的初期，我们使用的是基准包的CentralDirectory的CRC，但某些APP为了生成渠道包会对安装包重新打包，导致不同的渠道包的CentralDirectory并不一致。
+
+**我们需要保证tinkerId一定是要唯一性的，这里推荐使用git rev或者svn rev. 如果我们升级了客户端版本，但tinkerId与旧版本相同，会导致可能会加载旧版本的补丁。这里我们一定要注意，升级可客户端版本，需要更新tinkerId!**
 
 ## 如何使生成的补丁包更小？
 对于代码来说，我们最好记住以下几条规则：
