@@ -9,6 +9,8 @@ Tinker 常见问题
 4. 若自定义TinkerResultService，请务必将新的Service添加到Manifest中;
 5. 若使用`DefaultLifeCycle`注解生成Application，需要将原来Application的实现移动到ApplicationLike中，并将原来的Application类删掉;
 6. 关于Application的改造这一块大家比较疑惑，这块请认真阅读[自定义Application类](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95#%E8%87%AA%E5%AE%9A%E4%B9%89application%E7%B1%BB)，大部分的app应该都能在半小时内完成改造。
+7. 如果出现`Class ref in pre-verified class resolved to unexpected implementation`异常, 请确认以下几点：Application中传入ApplicationLike的参数时是否采用字符串而不是Class.getName方式；新的Application是否已经加入到dex loader pattern中; 代码中显式的使用了Application类。
+
 
 **在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。**
 
@@ -92,7 +94,7 @@ usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无�
 事实上，tinker也支持多flavor直接编译多个补丁包，具体可参考[多Flavor打包](https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97#%E5%A4%9Aflavor%E6%89%93%E5%8C%85)。
 
 ## tinker是否兼容加固？
-tinker的普通模式由于需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。
+tinker的普需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。
 
 
 ## 每次编译我应该保留哪些文件，如何兼容AndResGuard？
