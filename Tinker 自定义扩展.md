@@ -292,4 +292,4 @@ Tinker.with(context).setPatchServiceNotificationId(id);
 
 可以看到整个Tinker框架非常灵活，基本所有的逻辑都放在可复写的类或回调中，你可以轻松的完成自身需要的自定义工作。
 
-你可以根据需要自定义以上的一些类，然后我们继续学习[Tinker API概览](https://github.com/Tencent/tinker/wiki/Tinker-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)。
+你可以根据需要自定义以上的一些类，然后我们继续学习[Tinker API概览](https://github.com/Tencent/tinker/wiki/Tinker-API%E6%A6%82%E8%A7%88)。

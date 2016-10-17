@@ -9,7 +9,7 @@ Tinker 常见问题
 4. 若自定义TinkerResultService，请务必将新的Service添加到Manifest中;
 5. 若使用`DefaultLifeCycle`注解生成Application，需要将原来Application的实现移动到ApplicationLike中，并将原来的Application类删掉;
 6. 关于Application的改造这一块大家比较疑惑，这块请认真阅读[自定义Application类](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95#%E8%87%AA%E5%AE%9A%E4%B9%89application%E7%B1%BB)，大部分的app应该都能在半小时内完成改造。
-7. 如果出现`Class ref in pre-verified class resolved to unexpected implementation`异常, 请确认以下几点：Application中传入ApplicationLike的参数时是否采用字符串而不是Class.getName方式；新的Application是否已经加入到dex loader pattern中; 代码中显式的使用了Application类。
+7. 如果出现`Class ref in pre-verified class resolved to unexpected implementation`异常, 请确认以下几点：Application中传入ApplicationLike的参数时是否采用字符串而不是Class.getName方式；新的Application是否已经加入到dex loader pattern中; 额外添加到dex loader pattern中类的引用类也需要加载到loader pattern中。
 
 
 **在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。**
@@ -81,7 +81,7 @@ usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无�
 1. 需要插桩，在Dalvik会导致一定的性能损耗；
 2. 若补丁出现修改类的method，field，interface的数量，可能会导致补丁变大。具体原理可参考tinker相关的介绍文章。
 
-事实上，这里并不建议大家使用这种模式。提供这种模式是为了解决tinker无法支持加固、多flavor等场景。大家需要谨慎的选择。
+事实上，这里并不建议大家使用这种模式。提供这种模式是为了解决tinker无法支持加固、多flavor等场景。大家需要谨慎的选择。特别对于多渠道包问题，这里更建议大家使用下面推荐的方式。
 
 ## 如何兼容多渠道包？
 关于渠道包的问题，若使用flavor编译渠道包，会导致不同的渠道包由于BuildConfig变化导致classes.dex差异。这里建议的方式有：   

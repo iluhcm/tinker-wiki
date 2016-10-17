@@ -44,6 +44,7 @@ Tinker热补丁方案不仅支持类、So以及资源的替换，它还是2.X－
 2. 由于Google Play的开发者条款限制，不建议在GP渠道动态更新代码；
 3. 在Android N上，补丁对应用启动时间有轻微的影响；
 4. 不支持部分三星android-21机型，加载补丁时会主动抛出`"TinkerRuntimeException:checkDexInstall failed"`；
+5. tinker的一般模式并不支持加固，需要使用usePreGeneratedPatchDex模式，即提前生成补丁模式。
 
 ## 如何使用Tinker
 Tinker为了实现“高可用”的目标，在接入成本上做了妥协。热补丁并不简单，在使用之前请务必先仔细阅读以下文档：

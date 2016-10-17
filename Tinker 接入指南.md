@@ -44,7 +44,7 @@ apply plugin: 'com.tencent.tinker.patch'
 | tinkerId         | null  | 在运行过程中，我们需要验证基准apk包的tinkerId是否等于补丁包的tinkerId。这个是决定补丁包能运行在哪些基准包上面，一般来说我们可以使用git版本号、versionName等等。|     
 | `dex`               |   | dex相关的配置项 | 
 | dexMode            | jar  | 只能是'raw'或者'jar'。 <br>对于'raw'模式，我们将会保持输入dex的格式。<br>对于'jar'模式，我们将会把输入dex重新压缩封装到jar。如果你的minSdkVersion小于14，你必须选择‘jar’模式，而且它更省存储空间，但是验证md5时比'raw'模式耗时()。 | 
-| usePreGeneratedPatchDex   | flase  | 是否提前生成dex，而非合成的方式。这套方案即回退成Qzone的方案，对于需要使用`加固或者多flavor打包的用户`可使用。但是这套方案需要插桩，会造成`Dalvik下性能损耗以及Art补丁包可能过大的问题，务必谨慎使用`。 | 
+| usePreGeneratedPatchDex   | flase  | 是否提前生成dex，而非合成的方式。这套方案即回退成Qzone的方案，对于需要使用`加固或者多flavor打包(建议使用其他方式生成渠道包)的用户`可使用。但是这套方案需要插桩，会造成`Dalvik下性能损耗以及Art补丁包可能过大的问题，务必谨慎使用`。 | 
 | pattern            | []  | 需要处理dex路径，支持\*、?通配符，必须使用'/'分割。路径是相对安装包的，例如/assets/...| 
 | loader             |  [] | 这一项非常重要，它定义了哪些类在加载补丁包的时候会用到。这些类是通过Tinker无法修改的类，也是一定要放在main dex的类。<br>这里需要定义的类有：<br> 1. 你自己定义的Application类；<br> 2. Tinker库中用于加载补丁包的部分类，即com.tencent.tinker.loader.\*； <br> 3. 如果你自定义了TinkerLoader，需要将它以及它引用的所有类也加入loader中；<br> 4. 其他一些你不希望被更改的类，例如Sample中的BaseBuildInfo类。| 
 | `lib`                |   | lib相关的配置项 | 
