@@ -161,6 +161,7 @@ TinkerInstaller.install(appLike,
 | ERROR_PACKAGE_CHECK_PATCH_TINKER_ID_NOT_FOUND | -6|找不到补丁中"assets/package_meta.txt"中的TINKER_ID
 | ERROR_PACKAGE_CHECK_TINKER_ID_NOT_EQUAL       | -7|基准版本与补丁定义的TINKER_ID不相等|
 | ERROR_PACKAGE_CHECK_RESOURCE_META_CORRUPTED       | -8|"assets/res_meta.txt"信息损坏|
+| ERROR_PACKAGE_CHECK_TINKERFLAG_NOT_SUPPORT       | -9|tinkerFlag不支持补丁中的某些类型的更改，例如补丁中存在资源更新，但是使用者指定不支持资源类型更新。|
 
 `onLoadException`的错误码具体如下：
 
