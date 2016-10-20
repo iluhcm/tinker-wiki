@@ -174,4 +174,13 @@ Tinker的使用方式如下，以gradle接入的release包为例：
 ## 调试源码
 tinker调试源码非常简单，只需要运行tinker项目中`buildAndPublishLocalMaven`任务即可。
 
+此外localmaven无法传递依赖，需要显式引用以下库：
+
+```java
+compile("com.tencent.tinker:tinker-android-loader:${TINKER_VERSION}") { changing = true }
+compile("com.tencent.tinker:aosp-dexutils:${TINKER_VERSION}") { changing = true }
+compile("com.tencent.tinker:bsdiff-util:${TINKER_VERSION}") { changing = true }
+compile("com.tencent.tinker:tinker-commons:${TINKER_VERSION}") { changing = true }
+```
+
 总的来说，我们更推荐使用gradle作为接入方式。然后我们继续学习如何[Tinker 自定义扩展](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95)。
