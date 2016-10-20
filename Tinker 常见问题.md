@@ -54,7 +54,7 @@ packageConfig {
 
 无论是对Library还是Application，我们都是采用尽量少去反射的策略，这也是为了提高Tinker框架的兼容性。上线前，我们应当严格测试补丁是否正确加载了修改后的So库。**不使用反射的另外一个好处是我们可以做的工作更多，例如加载前验证它的MD5。**
 
-## 如何对资源文件作补丁？
+## 如何对资源文件作补丁,为什么有时候会提示大量没有改变的图片发生变更？
 Tinker采用全量合成方式实现资源替换，这里有以下几点是使用者需要明确的：
 
 1. remoteView是无法修改，例如transition动画，notification icon以及桌面图标;
@@ -63,6 +63,16 @@ Tinker采用全量合成方式实现资源替换，这里有以下几点是使�
 4. 若一个文件:assets/test.dex, 它既满足dex pattern, 又满足res pattern。Tinker只会处理dex pattern, 然后在合成资源包会忽略assets/test.dex的变更。library也是如此。
 
 **Waringing:若出现资源变更，我们需要使用applyResourceMapping方式编译，这样不仅可以减少补丁包大小，同时防止remote view id变更造成的异常情况。**最后我们应该查看编译过程中生成的`resources_out.zip`是否满足我们的要求。 
+
+有时候会发现大量明明没有改变的png发现变更，解压发现的确两次编译这些png的md5不一致。经分析，aapt在其中一次编译将png优化成8-bit，另外一次却没有，从而导致png改变了。如果你们app出现了这种情况，我们建议关闭aapt对png的优化：
+
+```xml
+aaptOptions{
+	cruncherEnabled false
+}
+```
+
+若你对安装包大小非常care，可以提前使用命令行工具将所有图片手动优化一次。我们也可以选择一些有损压缩工具，获得更大的压缩效果。
 
 ## Tinker中的dex配置'raw'与'jar'模式应该如何选择？
 它们应该说各有优劣势，大概应该有以下几条原则：
