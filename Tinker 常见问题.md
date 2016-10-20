@@ -96,6 +96,19 @@ usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无�
 ## tinker是否兼容加固？
 tinker的一般模式需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。
 
+**但是需要注意的是，某些加固工具会将非eported的四大组件的类名替换，对于这部分类即使使用usePreGeneratedPatchDex也无法修改。**
+
+## tinker与instant run的兼容问题？
+若不使用usePreGeneratedPatchDex模式，tinker与instant run是可以兼容的。但是不少用户基础包与补丁包混用两种模式导致补丁过大，所以tinker编译时禁用instant run，我们可以在设置中禁用instant run或使用assemble方式编译。
+
+大家日常debug时若想开启instant run功能，可以将tinker暂时关闭：
+
+```xml
+ext {
+    //for some reason, you may want to ignore tinkerBuild, such as instant run debug build?
+    tinkerEnabled = false
+}
+```
 
 ## 每次编译我应该保留哪些文件，如何兼容AndResGuard？
 正如sample中[app/build.gradle](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/build.gradle)，每个可能用到Tinker发布补丁的版本，需要在编译后保存以下几个文件：
