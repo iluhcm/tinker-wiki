@@ -96,7 +96,7 @@ usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无�
 ## tinker是否兼容加固？
 tinker的一般模式需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。
 
-**但是需要注意的是，某些加固工具会将非eported的四大组件的类名替换，对于这部分类即使使用usePreGeneratedPatchDex也无法修改。**
+**但是需要注意的是，某些加固工具会将非eported的四大组件的类名替换，对于这部分类即使使用usePreGeneratedPatchDex也无法修改。大家对于加固的情况，请仔细测试，能否支持与加固的方式有关联。**
 
 ## tinker与instant run的兼容问题？
 若不使用usePreGeneratedPatchDex模式，tinker与instant run是可以兼容的。但是不少用户基础包与补丁包混用两种模式导致补丁过大，所以tinker编译时禁用instant run，我们可以在设置中禁用instant run或使用assemble方式编译。
