@@ -104,7 +104,7 @@ usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无�
 事实上，tinker也支持多flavor直接编译多个补丁包，具体可参考[多Flavor打包](https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97#%E5%A4%9Aflavor%E6%89%93%E5%8C%85)。
 
 ## tinker是否兼容加固？
-tinker的一般模式需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。
+tinker的一般模式需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。由于加固会改变apk的dex结构，所以生成补丁包时我们务必要使用加固前的apk。
 
 **但是需要注意的是，某些加固工具会将非exported的四大组件的类名替换，对于这部分类即使使用usePreGeneratedPatchDex也无法修改。大家对于加固的情况，请仔细测试，能否支持与加固的方式有关联。**
 
