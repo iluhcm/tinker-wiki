@@ -5,7 +5,7 @@ Tinker 自定义扩展
 
 这里我们要实现的是完全将原来的Application类隔离起来，即其他任何类都不能再引用我们自己的Application。我们需要做的其实是以下几个工作：
 
-1. 将我们自己Application的所有代码拷贝到自己的ApplicationLike继承类中，例如SampleApplicationLike。你也可以直接将自己的Application改为继承ApplicationLike;
+1. 将我们自己Application类以及它的继承类的所有代码拷贝到自己的ApplicationLike继承类中，例如SampleApplicationLike。你也可以直接将自己的Application改为继承ApplicationLike;
 2. Application的`attachBaseContext`方法实现要单独移动到`onBaseContextAttached`中；
 3. 对ApplicationLike中，引用application的地方改成`getApplication()`;
 4. 对其他引用Application或者它的静态对象与方法的地方，改成引用ApplicationLike的静态对象与方法；
