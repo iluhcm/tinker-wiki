@@ -165,6 +165,9 @@ Tinker没有使用parent classloader方案，而是使用Multidex插入dexPathLi
 2. 将内联函数的优化关掉；
 3. 自己对mapping文件去除内联函数的行信息。 
 
+若使用gradle编译，与multiDexKeepProguard不同，我们无需将生成的tinker_proguard.pro拷贝到自己的配置中。
+
+
 ## Tinker的最佳实践？
 为了使补丁的成功率更高，我们在Sample中还做了以下工作：
 

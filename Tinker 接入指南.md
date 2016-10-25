@@ -66,9 +66,9 @@ apply plugin: 'com.tencent.tinker.patch'
 
 1. 将TINKER_ID自动插入AndroidManifest的meta项，输出路径为build/intermediates/tinker_intermediates/AndroidManifest.xml;
 
-2. 如果minifyEnabled为true，将自动将Tinker的proguard规则添加到proguardFiles中，输出路径为build/intermediates/tinker_intermediates/tinker_proguard.pro;
+2. 如果minifyEnabled为true，将自动将Tinker的proguard规则添加到proguardFiles中，输出路径为build/intermediates/tinker_intermediates/tinker_proguard.pro，`这里你不需要将它们拷贝到自己的proguard配置文件中`;
 
-3. 如果multiDexEnabled为true，将自动生成Tinker需要放在主dex的keep规则，你需要手动将生成规则拷贝到自己的multiDexKeepProguard文件中。这是因为它是一个单独的文件，而proguardFiles是一个list。例如Sample中的`multiDexKeepProguard file("keep_in_main_dex.txt")`。
+3. 如果multiDexEnabled为true，将自动生成Tinker需要放在主dex的keep规则，你`需要手动将生成规则拷贝到自己的multiDexKeepProguard文件中`。这是因为它是一个单独的文件，而proguardFiles是一个list。例如Sample中的`multiDexKeepProguard file("keep_in_main_dex.txt")`。
 
 4. 把dexOptions的jumboMode打开。
 
