@@ -60,7 +60,8 @@ Tinker采用全量合成方式实现资源替换，这里有以下几点是使�
 1. remoteView是无法修改，例如transition动画，notification icon以及桌面图标;
 2. 对于资源文件的更新(尤其是assets)，需要注意代码中是否采用直接读取sourceApk路径方式读取，这样方式是无法更新的;
 3. Tinker只会将满足res pattern的资源放在最后的合成补丁资源包中。一般为了减少合成资源大小，我们不建议输入classes.dex或lib文件的pattern;
-4. 若一个文件:assets/test.dex, 它既满足dex pattern, 又满足res pattern。Tinker只会处理dex pattern, 然后在合成资源包会忽略assets/test.dex的变更。library也是如此。
+4. 若一个文件:assets/classes.dex, 它既满足dex pattern, 又满足res pattern。Tinker只会处理dex pattern, 然后在合成资源包会忽略assets/classes.dex的变更。library也是如此。
+5. 只要资源发生变成的前提下我们才会合成新的资源包，这一定程度会增加占Rom体积，请在考虑后使用。
 
 **Waringing:若出现资源变更，我们需要使用applyResourceMapping方式编译，这样不仅可以减少补丁包大小，同时防止remote view id变更造成的异常情况。**最后我们应该查看编译过程中生成的`resources_out.zip`是否满足我们的要求。 
 
@@ -73,6 +74,14 @@ aaptOptions{
 ```
 
 若你对安装包大小非常care，可以提前使用命令行工具将所有图片手动优化一次。我们也可以选择一些有损压缩工具，获得更大的压缩效果。
+
+如果你确认png并没有修改，你可以在tinker的配置使用ignoreChange来忽略所有png文件的修改。
+
+```xml
+res {
+	ignoreChange = ["*.png"]
+｝
+```
 
 ## Tinker中的dex配置'raw'与'jar'模式应该如何选择？
 它们应该说各有优劣势，大概应该有以下几条原则：

@@ -19,7 +19,7 @@ buildscript {
 ```gradle
 dependencies {
 	//可选，用于生成application类 
-	compile('com.tencent.tinker:tinker-android-anno:1.7.1')
+	provided('com.tencent.tinker:tinker-android-anno:1.7.1')
     //tinker的核心库
     compile('com.tencent.tinker:tinker-android-lib:1.7.1') 
 }
@@ -51,7 +51,7 @@ apply plugin: 'com.tencent.tinker.patch'
 | pattern            | [] | 需要处理lib路径，支持\*、?通配符，必须使用'/'分割。与dex.pattern一致, 路径是相对安装包的，例如/assets/...| 
 | `res`                |   | res相关的配置项 | 
 | pattern            | [] | 需要处理res路径，支持\*、?通配符，必须使用'/'分割。与dex.pattern一致, 路径是相对安装包的，例如/assets/...，`务必注意的是，只有满足pattern的资源才会放到合成后的资源包。`| 
-| ignoreChange         | [] | 支持\*、?通配符，必须使用'/'分割。若满足ignoreChange的pattern，在编译时会忽略该文件的新增、删除与修改。| 
+| ignoreChange         | [] | 支持\*、?通配符，必须使用'/'分割。若满足ignoreChange的pattern，在编译时会忽略该文件的新增、删除与修改。 **最极端的情况，ignoreChange与上面的pattern一致，即会完全忽略所有资源的修改。**| 
 | largeModSize         | 100| 对于修改的资源，如果大于largeModSize，我们将使用bsdiff算法。这可以降低补丁包的大小，但是会增加合成时的复杂度。默认大小为100kb| 
 | `packageConfig`     |   | 用于生成补丁包中的'package_meta.txt'文件 | 
 | configField        |  TINKER_ID, NEW_TINKER_ID | configField("key", "value"), 默认我们自动从基准安装包与新安装包的Manifest中读取tinkerId,并自动写入configField。在这里，你可以定义其他的信息，在运行时可以通过TinkerLoadResult.getPackageConfigByName得到相应的数值。但是建议直接通过修改代码来实现，例如BuildConfig。 | 
