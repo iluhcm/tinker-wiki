@@ -172,9 +172,9 @@ Tinker的使用方式如下，以gradle接入的release包为例：
 4. 运行tinkerPatchRelease，即可自动编译最新的安装包，并与输入基准包作差异，得到最终的补丁包。
 
 ## 调试源码
-tinker调试源码非常简单，只需要运行tinker项目中`buildAndPublishLocalMaven`任务即可。
+tinker调试源码非常简单，大家需要在tinker的主工程运行tinker group中`buildAndPublishTinkerToLocalMaven`任务即可。
 
-此外localmaven无法传递依赖，需要显式引用以下库：
+此外由于localmaven无法传递依赖，需要在使用的地方再显式引用以下库：
 
 ```java
 compile("com.tencent.tinker:tinker-android-loader:${TINKER_VERSION}") { changing = true }
@@ -182,5 +182,13 @@ compile("com.tencent.tinker:aosp-dexutils:${TINKER_VERSION}") { changing = true 
 compile("com.tencent.tinker:bsdiff-util:${TINKER_VERSION}") { changing = true }
 compile("com.tencent.tinker:tinker-commons:${TINKER_VERSION}") { changing = true }
 ```
+
+[github/Tinker](https://github.com/Tencent/tinker)的默认分支为master分支，几个含义的含义分别是：
+
+1. master分支；最近一次release的稳定代码，我们在master分支打tag;
+2. dev分支；开发分支，这里会包含下一个版本的代码，我们只能给dev分支提pr以及验证部分已经修复的issue;
+3. hotfix分支；为了修复tinker紧急bug的分支。
+
+关于tinker分支管理、issue以及pr规范，请阅读[Tinker Contributing Guide](https://github.com/Tencent/tinker/blob/master/CONTRIBUTING.md)。
 
 总的来说，我们更推荐使用gradle作为接入方式。然后我们继续学习如何[Tinker 自定义扩展](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95)。
