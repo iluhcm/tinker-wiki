@@ -116,7 +116,7 @@ usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无�
 ## tinker是否兼容加固？
 tinker的一般模式需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。由于加固会改变apk的dex结构，所以生成补丁包时我们务必要使用加固前的apk。
 
-**但是需要注意的是，某些加固工具会将非exported的四大组件的类名替换，对于这部分类即使使用usePreGeneratedPatchDex也无法修改。大家对于加固的情况，请仔细测试，能否支持与加固的方式有关联。**
+**但是需要注意的是，某些加固工具会将非exported的四大组件的类名替换，对于这部分类即使使用usePreGeneratedPatchDex也无法修改。对于360加固，MainActivity由于被提前加载，也无法修复。大家对于加固的情况，请仔细测试，能否支持与加固的方式有关联。**
 
 ## Google Play版本是否可以有Tinker相关代码？
 由于Google play的使用者协议，对于GP渠道我们不能使用Tinker动态更新代码，这里会存在应用被下架的风险。**但是在Google play版本，我们依然可以存在Tinker的相关代码，但是我们需要屏蔽补丁的网络请求与合成相关操作。**
