@@ -234,9 +234,9 @@ public int patchCheck(String path, boolean isUpgrade)
 | 其他     | |在SamplePatchListener里面，我们还检查了当前Rom剩余空间，最大内存，是否是GooglePlay渠道等条件。| 
 
 ### 自定义AbstractResultService类
-[AbstractResultService类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/service/AbstractResultService.java)是:patch补丁合成进程将合成结果返回给主进程的类。我们为你提供了默认实现[TinkerResultService.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/service/TinkerResultService.java)。
+[AbstractResultService类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/service/AbstractResultService.java)是:patch补丁合成进程将合成结果返回给主进程的类。我们为你提供了默认实现[DefaultTinkerResultService.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/service/DefaultTinkerResultService.java)。
 
-一般来说, 你可以继承TinkerResultService实现自己的回调，例如[SampleResultService.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/service/SampleResultService.java)。**当然，你也需要在AndroidManifest上添加你的Service。**
+一般来说, 你可以继承DefaultTinkerResultService实现自己的回调，例如[SampleResultService.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/service/SampleResultService.java)。**当然，你也需要在AndroidManifest上添加你的Service。**
 
 ```xml
 <service
@@ -245,7 +245,7 @@ public int patchCheck(String path, boolean isUpgrade)
 />
 ```
 
-默认我们在TinkerResultService会杀掉:patch进程，假设当前是补丁升级并且成功了，我们会杀掉当前进程，让补丁包更快的生效。若是修复类型的补丁包并且失败了，我们会卸载补丁包。下面对[PatchResult](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/service/PatchResult.java)的定义做详细说明：
+默认我们在DefaultTinkerResultService会杀掉:patch进程，假设当前是补丁升级并且成功了，我们会杀掉当前进程，让补丁包更快的生效。若是修复类型的补丁包并且失败了，我们会卸载补丁包。下面对[PatchResult](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/service/PatchResult.java)的定义做详细说明：
 
 | 函数               | 描述       | 
 | ----------------- | ---------  | 
