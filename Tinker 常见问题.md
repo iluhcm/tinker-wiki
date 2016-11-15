@@ -170,7 +170,6 @@ Tinker没有使用parent classloader方案，而是使用Multidex插入dexPathLi
 
 事实上，微信只在主进程与:patch进程执行installTinker操作。其他进程只要不处理回调结果，不发起补丁请求即可。在[SampleUncaughtExceptionHandler](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/crash/SampleUncaughtExceptionHandler.java)中，为了防止Crash时并没有执行`installTinker`，全部使用的是[TinkerApplicationHelper](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/tinker/TinkerApplicationHelper.java)中的API，详细可以查看[Tinker API概览](https://github.com/Tencent/tinker/wiki/Tinker-API%E6%A6%82%E8%A7%88)。
 
-   
 ## Proguard 5.2.1 applymapping出现Warning？
 这是因为5.2.1增加了内联函数的行输出信息导致，你可以使用以下几种方法解决：
 
@@ -180,6 +179,10 @@ Tinker没有使用parent classloader方案，而是使用Multidex插入dexPathLi
 
 若使用gradle编译，与multiDexKeepProguard不同，我们无需将生成的tinker_proguard.pro拷贝到自己的配置中。
 
+## TinkerPatch补丁管理后台与Tinker的关系？
+[TinkerPatch平台](http://www.tinkerpatch.com) 是第三方开发基于CDN分发的补丁管理后台。它提供了脚本后台托管，版本管理，保证传输安全等功能，让我们更加容易的接入Tinker。
+
+我们可以根据自己的需要选择接入，它是独立于Tinker项目之外。对于`Tencent/tinker`, 我们依然会以它的稳定性与性能作为第一要务。
 
 ## Tinker的最佳实践？
 为了使补丁的成功率更高，我们在Sample中还做了以下工作：
