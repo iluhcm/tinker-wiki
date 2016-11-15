@@ -146,6 +146,8 @@ ext {
 ## tinkerId应该如何选择？
 tinkerId是用了区分基准安装包的，我们需要严格保证一个基准包的唯一性。在设计的初期，我们使用的是基准包的CentralDirectory的CRC，但某些APP为了生成渠道包会对安装包重新打包，导致不同的渠道包的CentralDirectory并不一致。
 
+编译补丁包时，我们会自动读取基准包AndroidManifest的tinkerId作为package_meta.txt中的TINKER_ID。将本次编译传入的tinkerId, 作为package_meta.txt中的NEW_TINKER_ID。当前NEW_TINKER_ID并没有被使用到，只是保留作为配置项。如果我们使用git rev作为tinkerid, 这时只要使用`git diff TINKER_ID NEW_TINKER_ID`即可获得所有的代码差异。
+
 **我们需要保证tinkerId一定是要唯一性的，这里推荐使用git rev或者svn rev. 如果我们升级了客户端版本，但tinkerId与旧版本相同，会导致可能会加载旧版本的补丁。这里我们一定要注意，升级可客户端版本，需要更新tinkerId!**
 
 ## 如何使生成的补丁包更小？
