@@ -25,7 +25,7 @@ Tinker是微信官方的Android热补丁解决方案，它支持动态下发代�
 | 开发透明           | yes            | yes       | no         | no         |
 | 复杂度             | 较低              | 较低       | 复杂          | 复杂     |
 | gradle支持         | yes            | no        | no         | no         |
-| Rom体积           | Dalvik较大             | 较小        | 较小         | 较小      |
+| Rom体积           | 较大             | 较小        | 较小         | 较小      |
 | 成功率           | 较高             | 较高        | 一般         | 最高      |
 
 **总的来说:**
@@ -34,7 +34,7 @@ Tinker是微信官方的Android热补丁解决方案，它支持动态下发代�
 2. Robust兼容性与成功率较高，但是它与AndFix一样，无法新增变量与类只能用做的bugFix方案；
 3. Qzone方案可以做到发布产品功能，但是它主要问题是插桩带来Dalvik的性能问题，以及为了解决Art下内存地址问题而导致补丁包急速增大的。
 
-Tinker热补丁方案不仅支持类、So以及资源的替换，它还是2.X－7.X的全平台支持。利用Tinker我们不仅可以用做bugfix,甚至可以替代功能的发布。Tinker已运行在微信的数亿Android设备上，那么为什么你不使用Tinker呢？
+特别是在Android N之后，由于混合编译的inline策略修改，对于市面上的各种方案都不太容易解决。而Tinker热补丁方案不仅支持类、So以及资源的替换，它还是2.X－7.X的全平台支持。利用Tinker我们不仅可以用做bugfix,甚至可以替代功能的发布。Tinker已运行在微信的数亿Android设备上，那么为什么你不使用Tinker呢？
 
 ## Tinker的已知问题
 由于原理与系统限制，Tinker有以下已知问题：
@@ -43,7 +43,8 @@ Tinker热补丁方案不仅支持类、So以及资源的替换，它还是2.X－
 2. 由于Google Play的开发者条款限制，不建议在GP渠道动态更新代码；
 3. 在Android N上，补丁对应用启动时间有轻微的影响；
 4. 不支持部分三星android-21机型，加载补丁时会主动抛出`"TinkerRuntimeException:checkDexInstall failed"`；
-5. tinker的一般模式并不支持加固，需要使用usePreGeneratedPatchDex模式，即提前生成补丁模式。某些加固工具可能会将非exported的四大组件类名替换，这些类将无法修改。
+5. tinker的一般模式并不支持加固，需要使用usePreGeneratedPatchDex模式，即提前生成补丁模式。某些加固工具可能会将非exported的四大组件类名替换，这些类将无法修改。对于Android N之后的设备，本模式可能会因为内联而出现问题，建议过滤N之后的设备；
+6. 对于资源替换，不支持修改remoteView。例如transition动画，notification icon以及桌面图标。
 
 ## 如何使用Tinker
 Tinker为了实现“高可用”的目标，在接入成本上做了妥协。热补丁并不简单，在使用之前请务必先仔细阅读以下文档：
