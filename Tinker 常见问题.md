@@ -30,6 +30,8 @@ Tinker并不干涉你分包与多dex的加载逻辑，但是你需要确保以�
 
 **注意：Tinker会自动生成需要放在主dex的keep规则，你需要手动将生成规则拷贝到自己的multiDexKeepProguard文件中。例如Sample中的`multiDexKeepProguard file("keep_in_main_dex.txt")`。**
 
+**另外，如果minsdkverion >=21, multiDexEnabled会被忽略。我们可以在build/intermediates/multi-dex查找最终的keep规则以及结果。**
+
 ## 我应该使用哪个作为补丁包下发，如何做多次修复？
 `patch_signed_7zip.apk`是已签名并且经过7z压缩的补丁包，但是你最好重命名一下，不要让它以`.apk`结尾，这是因为有些运营商会挟持以`.apk`结尾的资源。
 
