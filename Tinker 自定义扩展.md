@@ -125,7 +125,7 @@ TinkerInstaller.install(appLike,
 **各个类具体的功能与使用方法如下：**
    
 ### 自定义LoadReporter类
-[LoadReporter类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/LoadReporter.java)定义了Tinker在加载补丁时的一些回调，我们为你提供了默认实现[DefaultLoadReporter.java](http://git.code.oa.com/wechat-android-dev/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/DefaultLoadReporter.java).
+[LoadReporter类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/LoadReporter.java)定义了Tinker在加载补丁时的一些回调，我们为你提供了默认实现[DefaultLoadReporter.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/DefaultLoadReporter.java).
 
 一般来说, 你可以继承DefaultLoadReporter实现你自己感兴趣的事件回调，例如[SampleLoadReporter.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/reporter/SampleLoadReporter.java). 
 

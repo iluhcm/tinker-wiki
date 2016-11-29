@@ -141,7 +141,7 @@ ext {
 1. 编译后生成的apk文件，即用来编译补丁的基础版本；
 2. 若使用proguard混淆，需要保持mapping.txt文件；
 3. 需要保留编译时的R.txt文件；
-4. 若你同时使用了资源混淆组件[AndResGuard](https://github.com/shwenzhang/AndResGuard), 你也需要将混淆资源的mapping保留下来，同时将`r/*`也添加到res pattern中。具体我们可以参考[build.gradle](https://github.com/dodola/tinker/blob/add5a7dc9f066cf8f1fd476c9ae1f44d210cb2aa/tinker-sample-android/app/build.gradle)。
+4. 若你同时使用了资源混淆组件[AndResGuard](https://github.com/shwenzhang/AndResGuard), 你也需要将混淆资源的resource_mapping.txt保留下来，同时将`r/*`也添加到res pattern中。具体我们可以参考[build.gradle](https://github.com/dodola/tinker/blob/add5a7dc9f066cf8f1fd476c9ae1f44d210cb2aa/tinker-sample-android/app/build.gradle)。
 
 微信通过将补丁编译与Jenkins很好的结合起来，只需要点击一个按钮，即可方便的生成补丁包。
 	
