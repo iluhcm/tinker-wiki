@@ -81,3 +81,5 @@ Tinker经过几次全量上线，也发现了一些热补丁的问题。有以�
 5. [Tinker Dexdiff算法解析](https://www.zybuluo.com/dodola/note/554061)   
 
 6. [ART下的方法内联策略及其对Android热修复方案的影响分析](http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&mid=2649286426&idx=1&sn=eb75349c0c3663f10fbdd74ef87be338&chksm=8334c398b4434a8e6933ddb4fda4a4f06c729c7d2ffef37e4598cb90f4602f5310486b7f95ff#rd)   
+
+7. [Tinker MDCC会议 slide](https://github.com/MDCC2016/Android-Session-Slides/blob/master/04-%E5%BE%AE%E4%BF%A1%20Tinker%20%E7%83%AD%E8%A1%A5%E4%B8%81%E5%AE%9E%E8%B7%B5%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF.pdf)   
