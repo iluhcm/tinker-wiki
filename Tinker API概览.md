@@ -29,23 +29,13 @@ public static void install(ApplicationLike applicationLike) {
 **你一定要先install Tinker之后，才能使用Tinker相关的API。不然你只能使用TinkerApplicationHelper.java中的API。**
 
 ### 发起补丁修复请求
-正如之前所说的，补丁请求分为修复当前版本以及升级当前版本两种。修复当前版本一般是在当前版本的补丁文件出现缺失或不一致的情况，所有请求都将会交给PatchListener去处理。
-
-发起修复补丁请求：
-
-```java
-public static void onReceiveRepairPatch(Context context, String patchLocation) {
-	Tinker.with(context).getPatchListener().onPatchReceived(patchLocation, false);
-}
-```
-
-**事实上，大家其实可以忽略onReceiveRepairPatch这个接口。使用者无需手动调用，在DefaultLoadReporter中的onLoadFileNotFound会自动调用。它的作用是自动恢复已经加载补丁的缺失文件。**
+正如之前所说的，所有的补丁升级请求都将会分发到PatchListener去处理。
 
 发起升级补丁请求，即收到一个新的补丁包，多次补丁也是调用下面这个接口：
 
 ```java
 public static void onReceiveUpgradePatch(Context context, String patchLocation) {
-    Tinker.with(context).getPatchListener().onPatchReceived(patchLocation, true);
+    Tinker.with(context).getPatchListener().onPatchReceived(patchLocation);
 }
 ```
 ### Library库的加载

@@ -20,7 +20,7 @@ Tinker 自定义扩展
 +public class SampleApplicationLike extends DefaultApplicationLike 
 ```
 
-**同时我们需要将gradle的dex loader中的Application改为新的YourApplication。**
+**在1.7.6版本之前，我们需要手动同时将gradle的dex loader中的Application改为新的YourApplication。在1.7.6版本之后，tinker-build-plugin将会自动写入，我们无须手动填写。**
 
 ```xml
 dex {
@@ -113,8 +113,6 @@ PatchReporter patchReporter = new SamplePatchReporter(appLike.getApplication());
 PatchListener patchListener = new SamplePatchListener(appLike.getApplication());
 //you can set your own upgrade patch if you need
 AbstractPatch upgradePatchProcessor = new UpgradePatch();
-//you can set your own repair patch if you need
-AbstractPatch repairPatchProcessor = new RepairPatch();
 TinkerInstaller.install(appLike,
 	loadReporter, patchReporter, patchListener,
     SampleResultService.class, upgradePatchProcessor, repairPatchProcessor);
@@ -179,10 +177,9 @@ TinkerInstaller.install(appLike,
 | TYPE_PATCH_FILE    	                  |1 | 补丁文件 | 
 | TYPE_PATCH_INFO                  |2|"patch.info"补丁版本配置文件 | 
 | TYPE_DEX | 3|在Dalvik合成全量的Dex文件|
-| TYPE_DEX_FOR_ART       | 4|在Art合成的小Dex文件|
-| TYPE_DEX_OPT       | 5|odex文件|
-| TYPE_LIBRARY       | 6|library文件|
-| TYPE_RESOURCE       | 7|资源文件|
+| TYPE_DEX_OPT       | 4|odex文件|
+| TYPE_LIBRARY       | 5|library文件|
+| TYPE_RESOURCE       | 6|资源文件|
 
 加载过程的具体的错误类型与错误码可查看[DefaultLoadReporter.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/reporter/DefaultLoadReporter.java)的注释。
 
@@ -195,8 +192,6 @@ TinkerInstaller.install(appLike,
 一般来说, 你可以继承DefaultPatchReporter实现你自己感兴趣的事件回调，例如[SamplePatchReporter.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/reporter/SamplePatchReporter.java).
 
 **需要注意的是**:
-
-isUpgrade：区分补丁合成的类型。是由于文件丢失而发起的RepariPatch, 还是收到新的补丁而发起的UpgradePatch。
 
 | 函数               | 描述       | 
 | ----------------- | ---------  | 
@@ -220,7 +215,7 @@ PatchReporter中onPatchPackageCheckFail的错误码与LoadReporter的一致。
 若检查成功，我们会调用`TinkerPatchService.runPatchService`唤起:patch进程，去尝试完成补丁合成操作。反之，会回调检验失败的接口。事实上，你只需要复写`patchCheck`函数即可。若检查失败，会在LoadReporter的onLoadPatchListenerReceiveFail中回调。
 
 ```java
-public int patchCheck(String path, boolean isUpgrade)
+public int patchCheck(String path)
 ```
 
 以DefaultPatchListener为例，说明默认我们检查的条件，你可以定义自己的错误码，也可以沿用这里的错误码。
@@ -249,15 +244,11 @@ public int patchCheck(String path, boolean isUpgrade)
 
 | 函数               | 描述       | 
 | ----------------- | ---------  | 
-| isUpgradePatch    | 是否是补丁升级的类型。     | 
 | isSuccess| 补丁合成操作是否成功。  | 
-| rawPatchFilePath | 原始的补丁包路径，若isUpgradePatch为true, 即这个是外部临时的补丁包路径。反之对于rePairPatch这个是我们当前正常使用的补丁包路径，要谨慎对待。|
+| rawPatchFilePath | 原始的补丁包路径。|
 | costTime     | 本次补丁合成的耗时。|
 | e     | 本次补丁合成是否出现异常，null为没有异常。| 
 | patchVersion     | 补丁文件的md5, 有可能为空@Nullable。| 
-| baseTinkerID     | 基础包的TinkerID, 有可能为空@Nullable。| 
-| patchTinkerID     | 补丁包的TinkerID, 有可能为空@Nullable。| 
-
 
 在[SampleResultService.java](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/service/SampleResultService.java)中，我们没有立刻杀掉当前进程去应用补丁，而选择在当前应用在退入后台或手机锁屏时这两个时机。你也可以在自杀前，通过发送service或者broadcast inent来尽快重启进程。
 
@@ -286,10 +277,8 @@ TinkerPatchService.setTinkerNotificationId(id);
 Tinker.with(context).setPatchServiceNotificationId(id);
 ```
 
-### 自定义RepairPatch与UpgradePatch类
-[RepairPatch类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/patch/RepairPatch.java)是用来修复当前补丁包的处理类，也就是上面isUpgradePatch为false的情况。一般来说你不需要复写它，如果你复写了，只要把新的实例传递给TinkerInstaller即可。
-
-[UpgradePatch类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/patch/UpgradePatch.java)是用来升级当前补丁包的处理类，也就是上面isUpgradePatch为true的情况，一般来说你也不需要复写它。
+### 自定义UpgradePatch类
+[UpgradePatch类](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-lib/src/main/java/com/tencent/tinker/lib/patch/UpgradePatch.java)是用来升级当前补丁包的处理类，一般来说你也不需要复写它。
 
 可以看到整个Tinker框架非常灵活，基本所有的逻辑都放在可复写的类或回调中，你可以轻松的完成自身需要的自定义工作。
 

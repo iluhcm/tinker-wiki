@@ -43,7 +43,7 @@ Tinker是微信官方的Android热补丁解决方案，它支持动态下发代�
 2. 由于Google Play的开发者条款限制，不建议在GP渠道动态更新代码；
 3. 在Android N上，补丁对应用启动时间有轻微的影响；
 4. 不支持部分三星android-21机型，加载补丁时会主动抛出`"TinkerRuntimeException:checkDexInstall failed"`；
-5. tinker的一般模式并不支持加固，需要使用usePreGeneratedPatchDex模式，即提前生成补丁模式。某些加固工具可能会将非exported的四大组件类名替换，这些类将无法修改。对于Android N之后的设备，本模式可能会因为内联而出现问题，建议过滤N之后的设备；
+5. 由于各个厂商的加固实现并不一致，在1.7.6以及之后的版本，tinker不再支持加固的动态更新；
 6. 对于资源替换，不支持修改remoteView。例如transition动画，notification icon以及桌面图标。
 
 ## 如何使用Tinker
@@ -62,10 +62,8 @@ Tinker为了实现“高可用”的目标，在接入成本上做了妥协。�
 ## Tinker的TODO
 Tinker经过几次全量上线，也发现了一些热补丁的问题。有以下的一些优化工作尚未完成：
 
-1. Keep dex apply插件:即保证编译补丁包时使用与基础包一样的分包方案，减少由于dex移动导致的变化；
-2. 支持四大组件的代理；
-3. 资源修改的千万级测试；
-4. 直接解压没有修改的Dex时，需要计算是否会被Android N的内联规则可能影响；
+1. 支持四大组件的代理；
+2. 直接解压没有修改的Dex时，需要计算是否会被Android N的内联规则可能影响；
 
 ## 更多文章
 关于Tinker与其他热补丁方案的具体对比或Tinker的实现原理，可参考以下文章：

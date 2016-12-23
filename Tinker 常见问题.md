@@ -16,9 +16,9 @@ Tinker 常见问题
 
 
 ## Tinker库中有什么类是不能修改的？
-Tinker库中不能修改的类一共有25个，即com.tencent.tinker.loader.*类。加上你的Appliction类，只有25个类是无法通过Tinker来修改的。即使类似Tinker.java等管理类，也是可以通过Tinker本身来修改。
+Tinker库中不能修改的类一共有26个，即com.tencent.tinker.loader.*类。加上你的Appliction类，只有26个类是无法通过Tinker来修改的。即使类似Tinker.java等管理类，也是可以通过Tinker本身来修改。
 
-**注意，请务必将不能修改的类，特别是你的Application类加入到tinkerPatch.dex.loader pattern中。**
+**注意，在1.7.6版本之前，我们需要手动将不能修改的类添加到tinkerPatch.dex.loader pattern中。对于1.7.6以后的版本会自动生成。**
 
 ## 什么类需要放在主dex中？
 Tinker并不干涉你分包与多dex的加载逻辑，但是你需要确保以下几点：
@@ -28,7 +28,7 @@ Tinker并不干涉你分包与多dex的加载逻辑，但是你需要确保以�
 3. ApplicationLike的继承类也需要放在主dex中，但是它无须在dex.loader中配置，因为它是可以使用Tinker修改的类。最后`如果你需要在加载其他dex之前加载Tinker的管理类，你也可以将com.tencent.tinker.*都加入到主dex`。
 4. 你的ApplicationLike实现类的直接引用类以及在调用Multidex install之前加载的类也都需要放到主dex中。
 
-**注意：Tinker会自动生成需要放在主dex的keep规则，你需要手动将生成规则拷贝到自己的multiDexKeepProguard文件中。例如Sample中的`multiDexKeepProguard file("keep_in_main_dex.txt")`。**
+**注意：Tinker会自动生成需要放在主dex的keep规则。在1.7.6版本之前，你需要手动将生成规则拷贝到自己的multiDexKeepProguard文件中。例如Sample中的`multiDexKeepProguard file("keep_in_main_dex.txt")`。在1.7.6版本之后，这里会通过脚本自动处理，无须手动填写。**
 
 **另外，如果minsdkverion >=21, multiDexEnabled会被忽略。我们可以在build/intermediates/multi-dex查找最终的keep规则以及结果。**
 
@@ -97,13 +97,6 @@ res {
 
 **简单来说，'jar'模式更省空间，但是运行时校验的耗时大约为'raw'模式的两倍。如果你没有打开运行时校验，推荐使用'jar'模式。**
 
-## Tinker中的dex配置usePreGeneratedPatchDex应该如何选择？
-usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无须再合成。简单来说这边就是类似Qzone原理的方案，但是这套方案有两个问题：
-
-1. 需要插桩，在Dalvik会导致一定的性能损耗；
-2. 若补丁出现修改类的method，field，interface的数量，可能会导致补丁变大。具体原理可参考tinker相关的介绍文章。
-
-事实上，这里并不建议大家使用这种模式。提供这种模式是为了解决tinker无法支持加固、多flavor等场景。大家需要谨慎的选择。特别对于多渠道包问题，这里更建议大家使用下面推荐的方式。另外一方面，这种方案在Android N之后可能会产生问题，建议过滤N之后的用户。
 
 ## 如何兼容多渠道包？
 关于渠道包的问题，若使用flavor编译渠道包，会导致不同的渠道包由于BuildConfig变化导致classes.dex差异。这里建议的方式有：   
@@ -116,9 +109,7 @@ usePreGeneratedPatchDex模式即提前生成最终需要的Dex, 在补丁时无�
 事实上，tinker也支持多flavor直接编译多个补丁包，具体可参考[多Flavor打包](https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97#%E5%A4%9Aflavor%E6%89%93%E5%8C%85)。
 
 ## tinker是否兼容加固？
-tinker的一般模式需要Dex的合成，它并不支持加固，一定要使用加固的app可以使用usePreGeneratedPatchDex模式。由于加固会改变apk的dex结构，所以生成补丁包时我们务必要使用加固前的apk。
-
-**但是需要注意的是，某些加固工具会将非exported的四大组件的类名替换，对于这部分类即使使用usePreGeneratedPatchDex也无法修改。对于360加固，MainActivity由于被提前加载，也无法修复。大家对于加固的情况，请仔细测试，能否支持与加固的方式有关联。**
+由于各个厂商的加固实现并不一致，在1.7.6以及之后的版本，tinker不再支持加固的动态更新。
 
 ## Google Play版本是否可以有Tinker相关代码？
 由于Google play的使用者协议，对于GP渠道我们不能使用Tinker动态更新代码，这里会存在应用被下架的风险。**但是在Google play版本，我们依然可以存在Tinker的相关代码，但是我们需要屏蔽补丁的网络请求与合成相关操作。**
@@ -181,7 +172,10 @@ Tinker没有使用parent classloader方案，而是使用Multidex插入dexPathLi
 2. 将内联函数的优化关掉；
 3. 自己对mapping文件去除内联函数的行信息。 
 
-若使用gradle编译，与multiDexKeepProguard不同，我们无需将生成的tinker_proguard.pro拷贝到自己的配置中。
+若使用gradle编译，与multiDexKeepProguard不同，我们无需将生成的tinker_proguard.pro拷贝到自己的配置中。另外一个方面，若applymapping过程出现冲突，我们可以采取以下几个方法：
+
+1. 添加ignoreWarning；需要注意的是如果某些类的确需要采用新的mapping，这样补丁后App会出问题，一般我们并不建议采用这种方式；
+2. 修改基准包的mapping文件；我们需要根据新的mapping文件，修正基准包的mapping文件。例如将warning项删掉或者将新mapping中keep的项复写到基准的mapping中。可以参考脚本[proguard_warning.py](https://github.com/Tencent/tinker/blob/master/tinker-build/tinker-patch-cli/tool_output/proguard_warning.py).
 
 ## TinkerPatch补丁管理后台与Tinker的关系？
 [TinkerPatch平台](http://www.tinkerpatch.com) 是第三方开发基于CDN分发的补丁管理后台。它提供了脚本后台托管，版本管理，保证传输安全等功能，让我们更加容易的接入Tinker。
