@@ -193,6 +193,8 @@ compile("com.tencent.tinker:tinker-commons:${TINKER_VERSION}") { changing = true
 关于tinker分支管理、issue以及pr规范，请阅读[Tinker Contributing Guide](https://github.com/Tencent/tinker/blob/master/CONTRIBUTING.md)。
 
 ## TinkerPatch补丁管理后台
-[www.tinkerpatch.com](http://www.tinkerpatch.com) 是第三方开发基于CDN分发的补丁管理后台。它提供了脚本后台托管，版本管理，保证传输安全等功能，让你无需搭建一个后台，无需关心部署操作，只需引入一个 SDK 即可立即使用 Tinker。TinkerPatch平台的SDK也是开源的，它的地址为[TinkerPatch](https://github.com/TinkerPatch)。
+[www.tinkerpatch.com](http://www.tinkerpatch.com) 是第三方开发基于CDN分发的补丁管理后台。它提供了脚本后台托管，版本管理，保证传输安全等功能，让你无需搭建一个后台，无需关心部署操作，只需引入一个 SDK 即可立即使用 Tinker。
+
+此外，TinkerPatch 平台增加了一键傻瓜式接入/编译管理优化等功能，它的Github地址为[TinkerPatch](https://github.com/TinkerPatch)。
 
 总的来说，我们更推荐使用gradle作为接入方式。然后我们继续学习如何[Tinker 自定义扩展](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95)。

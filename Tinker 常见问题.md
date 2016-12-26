@@ -178,7 +178,7 @@ Tinker没有使用parent classloader方案，而是使用Multidex插入dexPathLi
 2. 修改基准包的mapping文件；我们需要根据新的mapping文件，修正基准包的mapping文件。例如将warning项删掉或者将新mapping中keep的项复写到基准的mapping中。可以参考脚本[proguard_warning.py](https://github.com/Tencent/tinker/blob/master/tinker-build/tinker-patch-cli/tool_output/proguard_warning.py).
 
 ## TinkerPatch补丁管理后台与Tinker的关系？
-[TinkerPatch平台](http://www.tinkerpatch.com) 是第三方开发基于CDN分发的补丁管理后台。它提供了脚本后台托管，版本管理，保证传输安全等功能，让我们更加容易的接入Tinker。
+[TinkerPatch平台](http://www.tinkerpatch.com) 是第三方开发基于CDN分发的补丁管理后台。它提供了补丁后台托管，版本管理，一键傻瓜式接入等功能，让我们可以无需修改任何代码即可轻松接入Tinker。
 
 我们可以根据自己的需要选择接入，它是独立于Tinker项目之外。对于`Tencent/tinker`, 我们依然会以它的稳定性与性能作为第一要务。
 
