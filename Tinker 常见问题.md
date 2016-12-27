@@ -1,6 +1,6 @@
 Tinker 常见问题
 ====================================
-## issue/提问须知
+## Issue/提问须知
 **在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。日志我们需要过滤"Tinker."关键字，对于合成失败的情况，请给出:patch进程的日志。这里需要将Android Moniter右上角设为No Filter。**
 
 提问题时若使用`不能用/没效果/有问题/报错`此类模糊表达，但又没给出任何代码截图报错的，将绝对不会有任何反馈。这种issue也是一律直接关闭的,大家可以参阅[提问的智慧](https://github.com/tvvocold/How-To-Ask-Questions-The-Smart-Way)。
