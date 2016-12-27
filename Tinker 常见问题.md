@@ -109,7 +109,6 @@ res {
 1. 将渠道信息写在AndroidManifest.xml或文件中，例如channel.ini；  
 2. 将渠道信息写在apk文件的zip comment中，这种是建议方式，例如可以使用项目[packer-ng-plugin](https://github.com/mcxiaoke/packer-ng-plugin)；  
 3. 若不同渠道存在功能上的差异，建议将差异部分放于单独的dex或采用相同代码不同配置方式实现；
-4. 若我们一定要使用flavor实现，这里可以考虑使用上述的usePreGeneratedPatchDex模式。
 
 事实上，tinker也支持多flavor直接编译多个补丁包，具体可参考[多Flavor打包](https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97#%E5%A4%9Aflavor%E6%89%93%E5%8C%85)。
 
@@ -120,7 +119,7 @@ res {
 由于Google play的使用者协议，对于GP渠道我们不能使用Tinker动态更新代码，这里会存在应用被下架的风险。**但是在Google play版本，我们依然可以存在Tinker的相关代码，但是我们需要屏蔽补丁的网络请求与合成相关操作。**
 
 ## tinker与instant run的兼容问题？
-若不使用usePreGeneratedPatchDex模式，tinker与instant run是可以兼容的。但是不少用户基础包与补丁包混用两种模式导致补丁过大，所以tinker编译时禁用instant run，我们可以在设置中禁用instant run或使用assemble方式编译。
+事实上，若编译时都使用assemble*, tinker与instant run是可以兼容的。但是不少用户基础包与补丁包混用两种模式导致补丁过大，所以tinker编译时禁用instant run，我们可以在设置中禁用instant run或使用assemble方式编译。
 
 大家日常debug时若想开启instant run功能，可以将tinker暂时关闭：
 
