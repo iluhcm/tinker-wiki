@@ -12,6 +12,8 @@ Tinker 自定义扩展
 
 更详细的事例，大家可以参考下面的一些例子以及[SampleApplicationLike](https://github.com/Tencent/tinker/blob/master/tinker-sample-android/app/src/main/java/tinker/sample/android/app/SampleApplicationLike.java)的做法。
 
+**如果你不愿意改造自己的应用，可以尝试TinkerPatch的一键傻瓜式接入，具体的可参考文档[TinkerPatch 平台介绍](http://tinkerpatch.com/Docs/intro)。**
+
 ### Application代理类
 为了使真正的Application实现可以在补丁包中修改，我们把Appliction类的所有逻辑移动到[ApplicationLike](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-loader/src/main/java/com/tencent/tinker/loader/app/ApplicationLike.java)代理类中。
 

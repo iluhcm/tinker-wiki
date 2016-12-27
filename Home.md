@@ -53,7 +53,7 @@ Tinker为了实现“高可用”的目标，在接入成本上做了妥协。�
 2. 如何自定义类请参考[Tinker 自定义扩展](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95)；
 3. Tinker的API预览请参考[Tinker API预览](https://github.com/Tencent/tinker/wiki/Tinker-API%E6%A6%82%E8%A7%88)；
 4. 其他常见问题，请参考[常见问题](https://github.com/Tencent/tinker/wiki/Tinker-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)；
-5. [TinkerPatch](http://www.tinkerpatch.com/)后台补丁平台的使用请参考[TinkerPatch平台文档](http://tinkerpatch.com/Docs/intro)。
+5. [TinkerPatch](http://www.tinkerpatch.com/)后台补丁平台的支持一键傻瓜式接入，使用请参考[TinkerPatch平台文档](http://tinkerpatch.com/Docs/intro)。
 
 为了方便大家更容易的接入Tinker或讨论相关技术，大家可加入QQ交流群377388954。为了方便大家交流，入群请注明姓名与公司等信息。
 
