@@ -1,5 +1,12 @@
 Tinker 常见问题
 ====================================
+## issue/提问须知
+**在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。日志我们需要过滤"Tinker."关键字，对于合成失败的情况，请给出:patch进程的日志。这里需要将Android Moniter右上角设为No Filter。**
+
+提问题时若使用`不能用/没效果/有问题/报错`此类模糊表达，但又没给出任何代码截图报错的，将绝对不会有任何反馈。这种issue也是一律直接关闭的,大家可以参阅[提问的智慧](https://github.com/tvvocold/How-To-Ask-Questions-The-Smart-Way)。
+
+Tinker是一个开源项目，希望大家遇到问题时要学会先思考，看看sample与Tinker的源码，更鼓励大家给我们提pr.
+
 ## Tinker编译相关问题？
 编译过程相关的issue请先查看是否是以下情况：
 
@@ -11,8 +18,6 @@ Tinker 常见问题
 6. 若使用`DefaultLifeCycle`注解生成Application，需要将原来Application的实现移动到ApplicationLike中，并将原来的Application类删掉;
 7. 关于Application的改造这一块大家比较疑惑，这块请认真阅读[自定义Application类](https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95#%E8%87%AA%E5%AE%9A%E4%B9%89application%E7%B1%BB)，大部分的app应该都能在半小时内完成改造。
 8. 如果出现`Class ref in pre-verified class resolved to unexpected implementation`异常, 请确认以下几点：Application中传入ApplicationLike的参数时是否采用字符串而不是Class.getName方式；新的Application是否已经加入到dex loader pattern中; 额外添加到dex loader pattern中类的引用类也需要加载到loader pattern中。
-
-**在提交issue之前，我们应该先查询是否已经有相关的issue。提交issue时，我们需要写明issue的原因，以及编译或运行过程的日志(加载进程以及Patch进程)。日志我们需要过滤"Tinker."关键字，对于合成失败的情况，请给出:patch进程的日志。这里需要将Android Moniter右上角设为No Filter。**
 
 
 ## Tinker库中有什么类是不能修改的？
