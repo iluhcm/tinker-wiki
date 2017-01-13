@@ -117,7 +117,7 @@ PatchListener patchListener = new SamplePatchListener(appLike.getApplication());
 AbstractPatch upgradePatchProcessor = new UpgradePatch();
 TinkerInstaller.install(appLike,
 	loadReporter, patchReporter, patchListener,
-    SampleResultService.class, upgradePatchProcessor, repairPatchProcessor);
+    SampleResultService.class, upgradePatchProcessor);
 ```
 
 你也可以使用`sampleInstallTinker`，即全部使用默认参数。
@@ -200,7 +200,7 @@ TinkerInstaller.install(appLike,
 | `onPatchResult`    |这个是无论补丁合成失败或者成功都会回调的接口，它返回了本次合成的类型，时间以及结果等。默认我们只是简单的输出这个信息，你可以在这里加上监控上报逻辑。     | 
 | `onPatchServiceStart`    |这个是Patch进程启动时的回调，我们可以在这里进行一个统计的工作。     | 
 | onPatchPackageCheckFail     | 补丁合成过程对输入补丁包的检查失败，这里可以通过错误码区分，例如签名校验失败、tinkerId不一致等原因。默认我们会删除临时文件。|
-| onPatchVersionCheckFail     | 对patch.info的校验失败，对于RepairPatch, 当前的补丁版本应该等于输入补丁包的版本。反而，对于UpgradePatch, 输入补丁包版本不能等于当前的补丁版本。默认我们会删除临时文件。|
+| onPatchVersionCheckFail     | 对patch.info的校验版本合法性校验。若校验失败，默认我们会删除临时文件。|
 | onPatchTypeExtractFail     | 从补丁包与原始安装包中合成某种类型的文件出现错误，默认我们会删除临时文件。| 
 | onPatchDexOptFail     | 对合成的dex文件提前进行dexopt时出现异常，默认我们会删除临时文件。|
 | onPatchInfoCorrupted     |patch.info是用来管理补丁包版本的文件，这是在更新info文件时发生损坏的回调。默认我们会卸载补丁包，因为此时我们已经无法恢复了。|

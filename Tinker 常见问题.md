@@ -56,11 +56,9 @@ packageConfig {
 **Tinker支持对同一基准版本做多次补丁修复，在生成补丁时，oldApk依然是已经发布出去的那个版本。即补丁版本二的oldApk不能是补丁版本一，它应该依然是用户手机上已经安装的基准版本。**
    
 ## 如何对Library文件作补丁？
-当前我们并没有直接将补丁的lib路径添加到`DexPathList`中，理论上这样可以做到程序完全没有感知的对Library文件作补丁。这里主要是因为在多abi的情况下，某些机器获取的并不准确。**当前对Library文件作补丁可参考[Tinker API概览](https://github.com/Tencent/tinker/wiki/Tinker-API%E6%A6%82%E8%A7%88)，这里以后需要考虑优化。**
+当前我们并没有直接将补丁的lib路径添加到`DexPathList`中，理论上这样可以做到程序完全没有感知的对Library文件作补丁。这里主要是因为在多abi的情况下，某些机器获取的并不准确。**当前对Library文件作补丁可参考[Tinker API概览](https://github.com/Tencent/tinker/wiki/Tinker-API%E6%A6%82%E8%A7%88)，tinker 1.7.7版本我们也提供了一键反射的方案给大家选择。**
 
-另外一方面，对于第三方库文件的加载我们无法干预，但是只要在我们的代码提前加载第三方的库文件即可。不过这里确保我们使用的是同一个classloader来加载。
-
-无论是对Library还是Application，我们都是采用尽量少去反射的策略，这也是为了提高Tinker框架的兼容性。上线前，我们应当严格测试补丁是否正确加载了修改后的So库。**不使用反射的另外一个好处是我们可以做的工作更多，例如加载前验证它的MD5。**
+大家可以根据自己的项目需要选择合适的方案，事实上，无论是对Library还是Application，我们都是采用尽量少去反射的策略，这也是为了提高Tinker框架的兼容性。上线前，我们应当严格测试补丁是否正确加载了修改后的So库。
 
 ## 如何对资源文件作补丁,为什么有时候会提示大量没有改变的图片发生变更？
 Tinker采用全量合成方式实现资源替换，这里有以下几点是使用者需要明确的：
@@ -107,7 +105,7 @@ res {
 关于渠道包的问题，若使用flavor编译渠道包，会导致不同的渠道包由于BuildConfig变化导致classes.dex差异。这里建议的方式有：   
 
 1. 将渠道信息写在AndroidManifest.xml或文件中，例如channel.ini；  
-2. 将渠道信息写在apk文件的zip comment中，这种是建议方式，例如可以使用项目[packer-ng-plugin](https://github.com/mcxiaoke/packer-ng-plugin)；  
+2. 将渠道信息写在apk文件的zip comment中，这种是建议方式，例如可以使用项目[packer-ng-plugin](https://github.com/mcxiaoke/packer-ng-plugin)或者可使用V2 Scheme的[walle](https://github.com/Meituan-Dianping/walle)；  
 3. 若不同渠道存在功能上的差异，建议将差异部分放于单独的dex或采用相同代码不同配置方式实现；
 
 事实上，tinker也支持多flavor直接编译多个补丁包，具体可参考[多Flavor打包](https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97#%E5%A4%9Aflavor%E6%89%93%E5%8C%85)。

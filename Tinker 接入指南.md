@@ -9,7 +9,7 @@ gradle是推荐的接入方式，在gradle插件`tinker-patch-gradle-plugin`中�
 ```gradle
 buildscript {
     dependencies {
-        classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.7.6')
+        classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.7.7')
     }
 }
 ```
@@ -19,9 +19,9 @@ buildscript {
 ```gradle
 dependencies {
 	//可选，用于生成application类 
-	provided('com.tencent.tinker:tinker-android-anno:1.7.6')
+	provided('com.tencent.tinker:tinker-android-anno:1.7.7')
     //tinker的核心库
-    compile('com.tencent.tinker:tinker-android-lib:1.7.6') 
+    compile('com.tencent.tinker:tinker-android-lib:1.7.7') 
 }
 ...
 ...
