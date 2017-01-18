@@ -40,7 +40,7 @@ apply plugin: 'com.tencent.tinker.patch'
 | ignoreWarning     | false | 如果出现以下的情况，并且ignoreWarning为false，我们将中断编译。因为这些情况可能会导致编译出来的patch包带来风险：<br> 1. minSdkVersion小于14，但是`dexMode`的值为"raw";<br> 2. 新编译的安装包出现新增的四大组件(Activity, BroadcastReceiver...)；<br> 3. 定义在dex.loader用于加载补丁的类不在main dex中;<br> 4. 定义在dex.loader用于加载补丁的类出现修改；<br> 5. resources.arsc改变，但没有使用applyResourceMapping编译。|
 | useSign            | true |在运行过程中，我们需要验证基准apk包与补丁包的签名是否一致，我们是否需要为你签名。|
 | `buildConfig`        |  | 编译相关的配置项   |     
-| applyMapping       | null | 可选参数；在编译新的apk时候，我们希望通过保持旧apk的proguard混淆方式，从而减少补丁包的大小。这个只是推荐的，但`设置applyMapping会影响任何的assemble编译`。 |     
+| applyMapping       | null | 可选参数；在编译新的apk时候，我们希望通过保持旧apk的proguard混淆方式，从而减少补丁包的大小。这个只是推荐设置，`不设置applyMapping也不会影响任何的assemble编译`。 |
 | applyResourceMapping  | null | 可选参数；在编译新的apk时候，我们希望通过旧apk的`R.txt`文件保持ResId的分配，这样不仅`可以减少补丁包的大小`，同时也`避免由于ResId改变导致remote view异常`。 |     
 | tinkerId         | null  | 在运行过程中，我们需要验证基准apk包的tinkerId是否等于补丁包的tinkerId。这个是决定补丁包能运行在哪些基准包上面，一般来说我们可以使用git版本号、versionName等等。|     
 | keepDexApply         | false  | 如果我们有多个dex,编译补丁时可能会由于类的移动导致变更增多。若打开`keepDexApply`模式，补丁包将根据基准包的类分布来编译。|    
