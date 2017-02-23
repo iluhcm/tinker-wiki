@@ -17,8 +17,8 @@ gradle版本：如:2.10
 系统：如:Mac
 
 堆栈/日志：
-1. 如是编译异常，请在执行gradle命令时，加上--stacktrace。
-2. 日志我们需要过滤"Tinker."关键字，
+1. 如是编译异常，请在执行gradle命令时，加上--stacktrace;
+2. 日志我们需要过滤"Tinker."关键字;
 3. 对于合成失败的情况，请给出:patch进程的日志,这里需要将Android Moniter右上角设为No Filter。
 ```
 
