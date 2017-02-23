@@ -16,7 +16,10 @@ gradle版本：如:2.10
 
 系统：如:Mac
 
-堆栈/日志：如是编译异常，请在执行gradle命令时，加上--stacktrace。日志我们需要过滤"Tinker."关键字，对于合成失败的情况，请给出:patch进程的日志。这里需要将Android Moniter右上角设为No Filter。
+堆栈/日志：
+1. 如是编译异常，请在执行gradle命令时，加上--stacktrace。
+2. 日志我们需要过滤"Tinker."关键字，
+3. 对于合成失败的情况，请给出:patch进程的日志,这里需要将Android Moniter右上角设为No Filter。
 ```
 
 提问题时若使用`不能用/没效果/有问题/报错`此类模糊表达，但又没给出任何代码截图报错的，将绝对不会有任何反馈。这种issue也是一律直接关闭的,大家可以参阅[提问的智慧](https://github.com/tvvocold/How-To-Ask-Questions-The-Smart-Way)。
