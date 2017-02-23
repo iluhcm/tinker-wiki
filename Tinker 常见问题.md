@@ -14,6 +14,8 @@ tinker版本：如:1.7.7
 
 gradle版本：如:2.10
 
+是否使用第三方SDK： 如 TinkerPatch SDK 或者 Bugly SDK
+
 系统：如:Mac
 
 堆栈/日志：
