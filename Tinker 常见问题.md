@@ -191,9 +191,15 @@ Tinker没有使用parent classloader方案，而是使用Multidex插入dexPathLi
 ## Proguard 5.2.1 applymapping出现Warning？
 这是因为5.2.1增加了内联函数的行输出信息导致，你可以使用以下几种方法解决：
 
-1. 使用5.1版本点proguard;
+1. 使用5.1版本proguard;
 2. 将内联函数的优化关掉；
 3. 自己对mapping文件去除内联函数的行信息。 
+
+**如果使用 4.X 版本的 Proguard 强烈建议升级到 5.1 版本。可以先下载 5.1的 Proguard， 然后通过以下方式指定：**
+
+```
+ classpath files('proguard-5.1.jar')
+```
 
 若使用gradle编译，与multiDexKeepProguard不同，我们无需将生成的tinker_proguard.pro拷贝到自己的配置中。另外一个方面，若applymapping过程出现冲突，我们可以采取以下几个方法：
 
