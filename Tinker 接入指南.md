@@ -9,7 +9,7 @@ gradle是推荐的接入方式，在gradle插件`tinker-patch-gradle-plugin`中�
 ```gradle
 buildscript {
     dependencies {
-        classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.7.7')
+        classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.7.8')
     }
 }
 ```
@@ -19,9 +19,9 @@ buildscript {
 ```gradle
 dependencies {
 	//可选，用于生成application类 
-	provided('com.tencent.tinker:tinker-android-anno:1.7.7')
+	provided('com.tencent.tinker:tinker-android-anno:1.7.8')
     //tinker的核心库
-    compile('com.tencent.tinker:tinker-android-lib:1.7.7') 
+    compile('com.tencent.tinker:tinker-android-lib:1.7.8') 
 }
 ...
 ...
@@ -43,7 +43,8 @@ apply plugin: 'com.tencent.tinker.patch'
 | applyMapping       | null | 可选参数；在编译新的apk时候，我们希望通过保持旧apk的proguard混淆方式，从而减少补丁包的大小。这个只是推荐设置，`不设置applyMapping也不会影响任何的assemble编译`。 |
 | applyResourceMapping  | null | 可选参数；在编译新的apk时候，我们希望通过旧apk的`R.txt`文件保持ResId的分配，这样不仅`可以减少补丁包的大小`，同时也`避免由于ResId改变导致remote view异常`。 |     
 | tinkerId         | null  | 在运行过程中，我们需要验证基准apk包的tinkerId是否等于补丁包的tinkerId。这个是决定补丁包能运行在哪些基准包上面，一般来说我们可以使用git版本号、versionName等等。|     
-| keepDexApply         | false  | 如果我们有多个dex,编译补丁时可能会由于类的移动导致变更增多。若打开`keepDexApply`模式，补丁包将根据基准包的类分布来编译。|    
+| keepDexApply         | false  | 如果我们有多个dex,编译补丁时可能会由于类的移动导致变更增多。若打开`keepDexApply`模式，补丁包将根据基准包的类分布来编译。|
+| isProtectedApp         | false  | 是否使用加固模式，仅仅将变更的类合成补丁。**注意，这种模式仅仅可以用于加固应用中。**|    
 | `dex`               |   | dex相关的配置项 | 
 | dexMode            | jar  | 只能是'raw'或者'jar'。 <br>对于'raw'模式，我们将会保持输入dex的格式。<br>对于'jar'模式，我们将会把输入dex重新压缩封装到jar。如果你的minSdkVersion小于14，你必须选择‘jar’模式，而且它更省存储空间，但是验证md5时比'raw'模式耗时。默认我们并不会去校验md5,一般情况下选择jar模式即可。 | 
 | pattern            | []  | 需要处理dex路径，支持\*、?通配符，必须使用'/'分割。路径是相对安装包的，例如assets/...| 

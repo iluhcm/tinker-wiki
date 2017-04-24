@@ -148,6 +148,7 @@ TinkerInstaller.install(appLike,
 | onLoadPatchInfoCorrupted     | patch.info是用来管理补丁包版本的文件，这是info文件损坏的回调。默认我们会卸载补丁包，因为此时我们已经无法恢复了。|
 | onLoadPackageCheckFail     | 加载过程补丁包的检查失败，这里可以通过错误码区分，例如签名校验失败、tinkerId不一致等原因。默认我们将会卸载补丁包|
 | `onLoadException`     | 在加载过程捕捉到异常，`十分希望你可以把错误信息反馈给我们`。默认我们会直接卸载补丁包 |
+| `onLoadInterpret`     | 系统OTA后，为了加快补丁的执行，我们会采用解释模式来执行补丁。 |
 
 所有的错误码都定义在[ShareConstants.java](https://github.com/Tencent/tinker/blob/master/tinker-android/tinker-android-loader/src/main/java/com/tencent/tinker/loader/shareutil/ShareConstants.java)，`onLoadPackageCheckFail` 的相关错误码解析如下：
 
@@ -228,6 +229,7 @@ public int patchCheck(String path)
 | ERROR_PATCH_NOTEXIST| -2|输入的临时补丁包文件不存在。  | 
 | ERROR_PATCH_RUNNING |-3    | 当前:patch补丁合成进程正在运行。|
 | ERROR_PATCH_INSERVICE | -4|不能在:patch补丁合成进程，发起补丁的合成请求。|
+| ERROR_PATCH_JIT | -5|补丁不支持 N 之前的 JIT 模式。|
 | 其他     | |在SamplePatchListener里面，我们还检查了当前Rom剩余空间，最大内存，是否是GooglePlay渠道等条件。| 
 
 ### 自定义AbstractResultService类

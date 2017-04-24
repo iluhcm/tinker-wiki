@@ -132,7 +132,19 @@ res {
 事实上，tinker也支持多flavor直接编译多个补丁包，具体可参考[多Flavor打包](https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97#%E5%A4%9Aflavor%E6%89%93%E5%8C%85)。
 
 ## tinker是否兼容加固？
-由于各个厂商的加固实现并不一致，在1.7.6以及之后的版本，tinker不再支持加固的动态更新。
+tinker 1.7.8 可以通过 isProtectedApp 开启加固支持，这种模式仅仅可以使用在加固应用中。
+
+| 加固厂商               | 测试       | 
+| ----------------- | ---------  | 
+| 乐加固| Tested  | 
+| 爱加密 | Tested|
+| 梆梆加固     | Tested|
+| 360加固    | 暂不支持，需要等待新版本发布| 
+
+这里是否支持加固，需要加固厂商明确以下两点：
+
+1. 不能提前导入类；
+2. 在art平台若要编译oat文件，需要将内联取消。
 
 ## Google Play版本是否可以有Tinker相关代码？
 由于Google play的使用者协议，对于GP渠道我们不能使用Tinker动态更新代码，这里会存在应用被下架的风险。**但是在Google play版本，我们依然可以存在Tinker的相关代码，但是我们需要屏蔽补丁的网络请求与合成相关操作。**
@@ -157,7 +169,7 @@ ext {
 3. 需要保留编译时的R.txt文件；
 4. 若你同时使用了资源混淆组件[AndResGuard](https://github.com/shwenzhang/AndResGuard), 你也需要将混淆资源的resource_mapping.txt保留下来，同时将`r/*`也添加到res pattern中。具体我们可以参考[build.gradle](https://github.com/dodola/tinker/blob/add5a7dc9f066cf8f1fd476c9ae1f44d210cb2aa/tinker-sample-android/app/build.gradle)。
 
-微信通过将补丁编译与Jenkins很好的结合起来，只需要点击一个按钮，即可方便的生成补丁包。
+微信通过将补丁编译与Jenkins很好的结合起来，只需要点击一个按钮，即可方便的生成补丁包。也可以参考[tinkerpatch-andresguard-sample](https://github.com/TinkerPatch/tinkerpatch-andresguard-sample).
 	
 ## tinkerId应该如何选择？
 tinkerId是用了区分基准安装包的，我们需要严格保证一个基准包的唯一性。在设计的初期，我们使用的是基准包的CentralDirectory的CRC，但某些APP为了生成渠道包会对安装包重新打包，导致不同的渠道包的CentralDirectory并不一致。
